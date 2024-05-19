@@ -16,9 +16,46 @@ const RegisterScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('');
+
+    const API_BASE_URL = 'http://your-backend-url';
 
     const handleRegister = async () => {
-        // Registration logic here
+        try {
+            console.log("Attempting to register with:", { email, password, confirmPassword });
+            const response = await fetch(`${API_BASE_URL}/user/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    confirm_password: confirmPassword
+                }),
+            });
+
+            console.log("Response received:", response);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Registration successful:", data);
+                setMessage("Registration Successful. You can now login.");
+                setMessageType('success');
+                navigateToLogin();
+            } else {
+                console.log("Registration failed with status:", response.status);
+                const errorText = await response.text();
+                console.log("Error response text:", errorText);
+                setMessage("An error occurred during registration.");
+                setMessageType('error');
+            }
+        } catch (error) {
+            console.error("Registration Error:", error);
+            setMessage("An error occurred. Please try again later.");
+            setMessageType('error');
+        }
     };
 
     return (
