@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Image,
     SafeAreaView,
@@ -7,112 +7,114 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    ImageBackground, // Import ImageBackground
 } from 'react-native';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
     const handleLogin = async () => {
-        // Add your actual login logic here
-        // If login is successful, navigate to the Home screen
         console.log("Login button pressed");
-        navigation.navigate('HomeScreen'); // Make sure 'Home' matches the screen name in your navigator setup
-    };
-
-    const handleForgotPassword = () => {
-        // Logic for forgotten password
-        console.log('Forgot Password Pressed');
-        // For example, navigate to a different screen
-        // navigation.navigate('ForgotPasswordScreen');
-    };
-    const toggleRememberMe = () => {
-        setRememberMe(!rememberMe);
-        console.log('Remember Me:', !rememberMe);
+        navigation.navigate('HomeScreen');
     };
 
     return (
         <SafeAreaView style={styles.container}>
-            <Image
-                source={require('../assets/circles.png')}
-                style={styles.logo}
-            />
-            <View style={styles.content}>
-                <Text style={styles.title}>Login</Text>
-                <View style={[styles.fieldRow, styles.emailFieldAdjustment]}>
-                    <Image
-                        source={require('../assets/mail.png')}
-                        style={styles.icon}
-                    />
-                    <View style={styles.fieldContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
-                            keyboardType="email-address"
+            {/* Set an image as the background and apply a blur effect */}
+            <ImageBackground
+                source={require('../assets/login.png')}
+                style={styles.backgroundImage}
+                blurRadius={5} // You can adjust the blur radius
+            >
+                <Image
+                    source={require('../assets/circles.png')}
+                    style={styles.logo}
+                />
+                <View style={styles.content}>
+                    <Text style={styles.title}>Login</Text>
+                    <View style={[styles.fieldRow, styles.emailFieldAdjustment]}>
+                        <Image
+                            source={require('../assets/mail.png')}
+                            style={styles.icon}
                         />
-                    </View>
-                </View>
-
-                <View style={styles.fieldRow}>
-                    <Image
-                        source={require('../assets/lock.png')}
-                        style={styles.icon}
-                    />
-                    <View style={styles.fieldContainer}>
-                        <TextInput
-                            style={[styles.input, {flexGrow: 1}]}
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry={true}
-                        />
-                        <TouchableOpacity style={styles.showButton}>
-                            <Image
-                                source={require('../assets/Show.png')}
-                                style={styles.showButtonImage}
+                        <View style={styles.fieldContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Email"
+                                value={email}
+                                onChangeText={setEmail}
+                                keyboardType="email-address"
                             />
+                        </View>
+                    </View>
+
+                    <View style={[styles.fieldRow, styles.emailFieldAdjustment]}>
+                        <Image
+                            source={require('../assets/lock.png')}
+                            style={styles.icon}
+                        />
+                        <View style={styles.fieldContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Password"
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry={!passwordVisible}
+                            />
+                            <TouchableOpacity
+                                onPress={() => setPasswordVisible(!passwordVisible)}
+                                style={styles.showButton}
+                            >
+                                <Image
+                                    source={require('../assets/Show.png')}
+                                    style={styles.showButtonImage}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View style={styles.rememberMeContainer}>
+                        <TouchableOpacity
+                            style={styles.checkbox}
+                            onPress={() => setRememberMe(!rememberMe)}>
+                            <Text style={styles.checkboxLabel}>Remember Me</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('ForgotPasswordScreen')}
+                            style={styles.forgotPassword}>
+                            <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-                <View style={styles.optionsContainer}>
-                    <TouchableOpacity onPress={toggleRememberMe}>
-                        <Text style={[styles.optionText, rememberMe ? styles.optionSelected : null]}>
-                            Remember Me
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleForgotPassword}>
-                        <Text style={styles.optionText}>Forget password?</Text>
+
+                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                        <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-                <View style={styles.registerContainer}>
-                    <Text style={styles.loginText}>Don’t have an account yet?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-                        <Text style={[styles.loginText, {fontWeight: 'bold'}]}>Register Now</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     );
 };
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffecf2',
+        backgroundColor: '#ffecf2', // This might be overridden by the ImageBackground
         alignItems: 'center',
         justifyContent: 'center',
-
+    },
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'center', // Ensure content is centered
     },
     logo: {
         width: 260,
         height: 250,
         position: 'absolute',
-        bottom: 730,
+        bottom: 650,
         left: -50,
     },
     content: {
@@ -120,39 +122,45 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        marginTop:60,
+        marginTop: 10,
     },
     title: {
-        fontSize: 35,
+        fontSize: 40,
         fontWeight: 'bold',
         color: 'black',
+        marginTop: -80,
         marginBottom: 80,
     },
     fieldRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 30,
-        flex: 1, // Ensures that each row (email and password) has equal width
+        marginTop: 30,
+        marginBottom: 10,
+        width: 350,
+        right: 9,
     },
-    // fieldContainer: {
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    //     backgroundColor: 'white',
-    //     borderRadius: 30,
-    //     borderWidth: 1,
-    //     borderColor: 'white',
-    //     overflow: 'hidden',
-    //     flex: 1, // Make sure it takes up the remaining space
-    // },
-
-    // input: {
-    //     height: 48,
-    //     paddingLeft: 10,
-    //     fontSize: 16,
-    //     color: 'grey',
-    //     flex: 1, // Ensure input fills the space within its container
-    // },
-
+    icon: {
+        width: 24,
+        height: 24,
+        marginHorizontal: 16,
+    },
+    input: {
+        height: 48,
+        paddingLeft: 10,
+        fontSize: 16,
+        color: 'grey',
+        flex: 1,
+    },
+    fieldContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFC0CB', // Light pink background color
+        borderRadius: 30,
+        borderWidth: 1,
+        borderColor: 'white',
+        overflow: 'hidden',
+        flex: 1,
+    },
     button: {
         width: '50%',
         height: 40,
@@ -160,90 +168,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
-        marginTop: 100,
+        marginTop: 20,
     },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 16,
-
     },
-    registerContainer: {
+    rememberMeContainer: {
         flexDirection: 'row',
-        marginTop: 30,
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: 20,
+        marginBottom: 40,
     },
-    loginText: {
-        color: 'black',
+    checkbox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    checkboxLabel: {
+        marginLeft: 8,
         fontSize: 16,
+        color: 'grey',
     },
-// Adjust icon style if needed
-    icon: {
-        width: 24,
-        height: 24,
-        marginHorizontal: 16, // Increase spacing to visually separate the icon from the input field
+    forgotPassword: {
+        marginLeft: 20,
+    },
+    forgotPasswordText: {
+        fontSize: 16,
+        color: '#FC8585',
+        textDecorationLine: 'underline',
     },
     showButton: {
-        padding: 5, // Adjust the padding as needed
+        padding: 10,
     },
     showButtonImage: {
         width: 24,
-        height: 24, // Adjust size as necessary
-    },
-    // Adjust the input style to allow space for the Show button
-    input: {
-        height: 48,
-        paddingLeft: 10,
-        fontSize: 16,
-        color: 'grey',
-        flex: 1, // Ensures input fills the space within its container
-    },
-    // Make sure fieldContainer supports the inline Show button
-    fieldContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: 40,
-        borderWidth: 1,
-        borderColor: 'white',
-        overflow: 'hidden',
-        flex: 1, // This ensures that the container takes up the full width available after the icon
-    },
-    emailFieldAdjustment: {
-        marginLeft: -40, // Or any other value that suits your design
-    },
-    emailFieldContainer: {
-        flex: 200, // Increase flex value to make the email field longer
-        width: '80%',
-    },
-    forgotPasswordContainer: {
-        width: '80%',
-        alignItems: 'flex-end',
-        marginBottom: 20,
-    },
-    forgotPasswordText: {
-        fontSize: 14,
-        color: 'darkblue', // Sets the color to dark blue
-        fontWeight: 'bold', // Makes the text bold
-        right:40,
-
-    },
-    optionsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between', // Maintains space between but can be adjusted further if necessary
-        width: '85%', // Reduce or adjust width to control space between options
-        marginTop:10,
-        marginBottom: 30,
-        paddingHorizontal: 10, // Adding padding to the sides might help in reducing the overall space
-        left:20,
-    },
-    optionText: {
-        fontSize: 14,
-        color: 'black',
-        fontWeight: 'bold',
-
-    },
-    optionSelected: {
-        color: 'light blue', // Or any indication that it's selected
+        height: 24,
     },
 });
 

@@ -1,139 +1,123 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {CameraView, useCameraPermissions, useMicrophonePermissions} from 'expo-camera';
 
-const ASLInterpreterScreen = ({ navigation }) => {
-    return (
-        <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <Text style={styles.backButtonText}>Back</Text>
-            </TouchableOpacity>
-            <Image
-                source={require('../assets/circles.png')}
-                style={styles.logo}
-            />
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>ASL Interpreter</Text>
-                <Text style={styles.instruction}>In order to start interpreting you need to start the camera.</Text>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Camera')}>
-                    <Text style={styles.buttonText}>Start Camera!</Text>
+export default function App() {
+    const [cameraPermissionInfo, requestCameraPermission] = useCameraPermissions();
+    const [microphonePermissionInfo, requestMicrophonePermission] = useMicrophonePermissions();
+    const [isRecording, setIsRecording] = useState(false);
+    const cameraRef = useRef(null);
+
+    // Request camera and microphone permissions on component mount
+    useEffect(() => {
+        (async () => {
+            const cameraStatus = await requestCameraPermission();
+            const microphoneStatus = await requestMicrophonePermission();
+            if (!cameraStatus.granted || !microphoneStatus.granted) {
+                Alert.alert("Permissions required", "Camera and microphone permissions are needed to record video.");
+            }
+        })();
+    }, []);
+
+    // Check permission status and request if not granted
+    if (!cameraPermissionInfo || !microphonePermissionInfo) {
+        return <View style={styles.container}><Text>Requesting permissions...</Text></View>;
+    }
+
+    if (!cameraPermissionInfo.granted || !microphonePermissionInfo.granted) {
+        return (
+            <View style={styles.container}>
+                <Text>No access to camera or microphone</Text>
+                <TouchableOpacity onPress={() => {
+                    requestCameraPermission();
+                    requestMicrophonePermission();
+                }}>
+                    <Text>Grant Permissions</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.translationLabel}>Your Translation:</Text>
-            <TextInput
-                style={styles.translationInput}
-                placeholder="Translated text appears here..."
-                placeholderTextColor="#999"
-                editable={false}
-            />
-            <TouchableOpacity style={styles.imageButton} onPress={() => { /* Define what happens when button is pressed */ }}>
-                <Image
-                    style={styles.buttonImage}
-                    source={require('../assets/innter-mic-btn.png')}
-                />
-                <Image
-                    style={styles.overlayIcon}
-                    source={require('../assets/Speaker.png')}
-                />
-            </TouchableOpacity>
-        </SafeAreaView>
+        );
+    }
+
+    // Function to start recording
+
+    const startRecording = async () => {
+        if (cameraRef.current && !isRecording) {
+            console.log("Trying to start recording...");
+            setIsRecording(true); // Set recording to true immediately to block any overlapping starts
+            try {
+                const video = await cameraRef.current.recordAsync();
+                console.log('Video recorded:', video.uri);
+            } catch (error) {
+                console.error('Error recording video:', error);
+                Alert.alert('Error', `Failed to record video: ${error.message}`);
+            }
+            setIsRecording(false); // Set recording to false after the recording process is complete or fails
+        } else {
+            if (isRecording) {
+                console.log("Recording is already in progress");
+            } else {
+                console.log("Camera not ready");
+            }
+        }
+    };
+
+// Function to stop recording
+    const stopRecording = () => {
+        if (cameraRef.current && isRecording) {
+            console.log("Stopping recording...");
+            cameraRef.current.stopRecording(); // Attempt to stop the recording
+            setIsRecording(false); // Always set isRecording to false
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            <CameraView
+                ref={cameraRef}
+                style={styles.camera}
+                onCameraReady={() => console.log('Camera is ready')}
+                onMountError={(error) => console.log('Camera mount error:', error.message)}
+                // videoQuality={'1080p'}
+                mute={true}
+                mode={'video'}
+                facing={'front'}  // TODO: Allow the user to change this
+            >
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={startRecording}>
+                        <Text style={styles.text}>Start Recording</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={stopRecording}>
+                        <Text style={styles.text}>Stop Recording</Text>
+                    </TouchableOpacity>
+                </View>
+            </CameraView>
+        </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffecf2',
-        alignItems: 'center',
         justifyContent: 'center',
-    },
-    logo: {
-        width: 260,
-        height: 250,
-        position: 'absolute',
-        bottom: 730,
-        left: -50,
-    },
-    textContainer: {
         alignItems: 'center',
+    },
+    camera: {
+        width: '100%',
+        aspectRatio: 1,
+    },
+    buttonContainer: {
         position: 'absolute',
-        top: 150,
-    },
-    title: {
-        fontSize: 35,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'center',
-    },
-    instruction: {
-        fontSize: 20,
-        color: 'black',
-        textAlign: 'center',
-        marginTop: 20,
+        bottom: 20,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-around',
     },
     button: {
-        marginTop: 30,
-        backgroundColor: '#DE6969',
+        backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 20,
+        borderRadius: 5,
     },
-    buttonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
+    text: {
+        color: '#000',
     },
-    translationLabel: {
-        position: 'absolute',
-        left: 10,
-        top: '50%',
-        fontSize: 25,
-        color: 'black',
-    },
-    translationInput: {
-        position: 'absolute',
-        top: '58%',
-        left: 10,
-        right: 10,
-        backgroundColor: '#F9A4A4',
-        fontSize: 20,
-        color: 'black',
-        paddingVertical: 60,
-        paddingHorizontal: 15,
-        borderRadius: 30,
-    },
-    imageButton: {
-        position: 'absolute',
-        top: '80%',
-        alignSelf: 'center',
-        padding: 10,
-    },
-    buttonImage: {
-        width: 70,
-        height: 70,
-        resizeMode: 'contain',
-    },
-    overlayIcon: {
-        position: 'absolute',
-        top: 25,
-        left: 25,
-        width: 40,
-        height: 40,
-        resizeMode: 'contain',
-    },
-    backButton: {
-        position: 'absolute',
-        top: 20,
-        right: 20,
-        backgroundColor: '#DE6969',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 20,
-    },
-    backButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',  // Ensure text is centered within the button
-    }
 });
-
-export default ASLInterpreterScreen;
