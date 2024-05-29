@@ -78,10 +78,9 @@ async def update_user_profile(
     return MessageResponse(message=result["message"])
 
 
-@router.get("/profile/{email}", response_model=UserProfileResponse, responses={404: {"models": ErrorResponse}})
+@router.get("/get-profile/{email}", response_model=UserProfileResponse, responses={404: {"model": ErrorResponse}})
 async def get_user_profile(email: str, user_service: UserService = Depends(get_user_service)):
     profile = user_service.get_user_profile(email)
     if profile:
         return UserProfileResponse(name=profile.name, date_of_birth=profile.date_of_birth, country=profile.country)
-    else:
-        raise HTTPException(status_code=404, detail="User profile not found")
+    raise HTTPException(status_code=404, detail="User profile not found")
