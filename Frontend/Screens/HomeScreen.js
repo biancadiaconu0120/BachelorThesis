@@ -19,13 +19,13 @@ const HomeScreen = ({ navigation }) => {
                 }}
             >
                 <Image
-                    source={require('../assets/images/Info.png')}
+                    source={require('../assets/question.png')}
                     style={styles.topIcon}
                 />
-                <Image
-                    source={require('../assets/images/help.png')} // Adjust the path to your image file
-                    style={styles.buttonIcon}
-                />
+                {/*<Image*/}
+                {/*    source={require('../assets/images/help.png')} // Adjust the path to your image file*/}
+                {/*    style={styles.buttonIcon}*/}
+                {/*/>*/}
             </TouchableOpacity>
 
             {/* Existing Icon Button */}

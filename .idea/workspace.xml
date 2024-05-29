@@ -4,115 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fa55895-8537-4c27-a231-cadd883ddfaf" name="Changes" comment="Version before making the frontend and backend folders">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Bianca.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/ABCScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/ASLFingerspellScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/ASLInterpreterScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/BlogScreen1.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/BlogScreen2.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/HomeScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/InformationScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/InterpreterChooseScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/LearningCourseScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/LoginScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/ProfileScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/QuizScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/RegisterScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/WordScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Auto Layout Vertical.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Ellipse 15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Ellipse 16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Ellipse 19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageA.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageB.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageC.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageD.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageE.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageF.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageG.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageH.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageI.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageJ.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageK.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageL.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageM.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageN.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageO.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageP.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageQ.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageR.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageS (2).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageU.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageW.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageX.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageY.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ImageZ.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Learning1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Quiz1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Rectangle 66.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Rectangle 67.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Show.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/Speaker.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/adaptive-icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/camera.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/circles.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/download.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/favicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/firstsection.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/hand-sign.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/hand.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/hello.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/image1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/imagelearn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/Info.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/Profile Circle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/background-image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/emoji1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/emoji2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/emoji3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/emoji4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/emoji5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/emoji6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/help.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic6.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/topic8.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/imagesign.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/innter-mic-btn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/know.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/lock.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/login.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/look.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mail.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/photosign.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/quiz3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/secondsection.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/start.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/usericon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/videos/21530.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/videos/22741.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/videos/24851.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/videos/360_F_107579101_QVlTG43Fwg9Q6ggwF436MPIBTVpaKKtb.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/babel.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
-    </list>
+    <list default="true" id="9fa55895-8537-4c27-a231-cadd883ddfaf" name="Changes" comment="Version after adding the frontend and backend folders" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -139,7 +31,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/_Projects/Bianca",
+    "last_opened_file_path": "C:/_Projects/Bianca/Frontend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -186,7 +78,7 @@
       <workItem from="1715264031355" duration="2000" />
       <workItem from="1715264510994" duration="27887000" />
       <workItem from="1715937923239" duration="1458000" />
-      <workItem from="1716112146486" duration="7239000" />
+      <workItem from="1716112146486" duration="7453000" />
     </task>
     <task id="LOCAL-00001" summary="Commit after version change">
       <option name="closed" value="true" />
@@ -204,7 +96,23 @@
       <option name="project" value="LOCAL" />
       <updated>1716116435586</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Version after adding the frontend and backend folders">
+      <option name="closed" value="true" />
+      <created>1716126626692</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1716126626692</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Version after adding the frontend and backend folders">
+      <option name="closed" value="true" />
+      <created>1716126663607</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716126663607</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,6 +136,7 @@
     </ignored-roots>
     <MESSAGE value="Commit after version change" />
     <MESSAGE value="Version before making the frontend and backend folders" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version before making the frontend and backend folders" />
+    <MESSAGE value="Version after adding the frontend and backend folders" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version after adding the frontend and backend folders" />
   </component>
 </project>
