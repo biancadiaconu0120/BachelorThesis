@@ -16,51 +16,40 @@ const ProfileScreen = ({navigation}) => {
 
     const [userEmail, setUserEmail] = useState("");
     useEffect(() => {
-        const getUserEmail = async () => {
+        const getUserEmailAndFetchProfile = async () => {
             const savedEmail = await AsyncStorage.getItem('email');
             if (savedEmail) {
                 setUserEmail(savedEmail);
-            }
-        };
+                try {
+                    console.log(`Fetching user profile for ${savedEmail}`);
 
-        getUserEmail();
-    }, []);
+                    const response = await fetch(
+                        `${API_BASE_URL}/user/get-profile/${encodeURIComponent(savedEmail)}`
+                    );
 
-
-    useEffect(() => {
-        const fetchProfileData = async () => {
-            try {
-                console.log(`Fetching user profile for ${userEmail}`);
-
-                const response = await fetch(`${API_BASE_URL}/user/profile/${userEmail}`, {
-                    method: 'GET',
-                    // headers: {
-                    //     'Content-Type': 'application/json',
-                    // },
-                });
-
-                if (response.ok) {
-                    const profile = await response.json();
-                    setName(profile.name);
-                    setDate(new Date(profile.date_of_birth));
-                    setCountry(profile.country);
-                } else {
-                    const errorData = await response.json();
-                    if (response.status === 404 && errorData.detail === "User profile not found") {
-                        setUserProfileNotFound(true);
+                    if (response.ok) {
+                        const profile = await response.json();
+                        setName(profile.name);
+                        setDate(formatStringToDate(profile.date_of_birth));
+                        setCountry(profile.country);
                     } else {
-                        console.error('Failed to load profile data:', errorData);
-                        Alert.alert("Error", "Failed to load profile data.");
+                        const errorData = await response.json();
+                        if (response.status === 404 && errorData.detail === "User profile not found") {
+                            setUserProfileNotFound(true);
+                        } else {
+                            console.error('Failed to load profile data:', errorData);
+                            Alert.alert("Error", "1 - Failed to load profile data.");
+                        }
                     }
+                } catch (error) {
+                    console.error('Network error:', error);
+                    Alert.alert("Error", "2 - Failed to load profile data.");
                 }
-            } catch (error) {
-                console.error('Network error:', error);
-                Alert.alert("Error", "Failed to load profile data.");
             }
         };
 
-        fetchProfileData();
-    }, [userEmail]);
+        getUserEmailAndFetchProfile();
+    }, []);
 
     const handlePickImage = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -91,9 +80,13 @@ const ProfileScreen = ({navigation}) => {
 
     const formatDateToString = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${year}-${month}-${day}`;
+    };
+
+    const formatStringToDate = (date_string) => {
+        return new Date(date_string);
     };
 
     const handleSaveProfile = async () => {
@@ -104,7 +97,7 @@ const ProfileScreen = ({navigation}) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userEmail,
+                    userEmail: userEmail,
                     name: name,
                     date_of_birth: formatDateToString(date),
                     country: country,
