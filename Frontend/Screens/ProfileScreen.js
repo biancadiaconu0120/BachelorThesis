@@ -1,14 +1,66 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, Alert, TextInput, Platform } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const ProfileScreen = ({ navigation }) => {
+import {API_BASE_URL} from "../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const ProfileScreen = ({navigation}) => {
     const [profileImage, setProfileImage] = useState(require('../assets/usericon.png'));
     const [name, setName] = useState("");
     const [date, setDate] = useState(new Date());
     const [country, setCountry] = useState("");
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [userProfileNotFound, setUserProfileNotFound] = useState(false);
+
+    const [userEmail, setUserEmail] = useState("");
+    useEffect(() => {
+        const getUserEmail = async () => {
+            const savedEmail = await AsyncStorage.getItem('email');
+            if (savedEmail) {
+                setUserEmail(savedEmail);
+            }
+        };
+
+        getUserEmail();
+    }, []);
+
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            try {
+                console.log(`Fetching user profile for ${userEmail}`);
+
+                const response = await fetch(`${API_BASE_URL}/user/profile/${userEmail}`, {
+                    method: 'GET',
+                    // headers: {
+                    //     'Content-Type': 'application/json',
+                    // },
+                });
+
+                if (response.ok) {
+                    const profile = await response.json();
+                    setName(profile.name);
+                    setDate(new Date(profile.date_of_birth));
+                    setCountry(profile.country);
+                } else {
+                    const errorData = await response.json();
+                    if (response.status === 404 && errorData.detail === "User profile not found") {
+                        setUserProfileNotFound(true);
+                    } else {
+                        console.error('Failed to load profile data:', errorData);
+                        Alert.alert("Error", "Failed to load profile data.");
+                    }
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                Alert.alert("Error", "Failed to load profile data.");
+            }
+        };
+
+        fetchProfileData();
+    }, [userEmail]);
 
     const handlePickImage = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -25,20 +77,54 @@ const ProfileScreen = ({ navigation }) => {
         });
 
         if (!pickerResult.cancelled) {
-            setProfileImage({ uri: pickerResult.uri });
+            setProfileImage({uri: pickerResult.uri});
         }
     };
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
-        setShowDatePicker(false); // This will hide the DatePicker
-        if (selectedDate) { // Ensures that the date is set only if the picker has not been cancelled.
+        setShowDatePicker(false);
+        if (selectedDate) {
             setDate(currentDate);
         }
     };
 
-    const onSaveChanges = () => {
-        Alert.alert("Changes Saved", "Your profile changes have been saved successfully.");
+    const formatDateToString = (date) => {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
+    const handleSaveProfile = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/user/profile`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userEmail,
+                    name: name,
+                    date_of_birth: formatDateToString(date),
+                    country: country,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('Profile update successful:', data);
+                Alert.alert('Profile updated successfully!');
+                // Optionally navigate to another screen
+            } else {
+                console.error('Profile update failed:', data);
+                Alert.alert('Error updating profile:', data.detail || 'Unknown error');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            Alert.alert('An error occurred. Please try again later.');
+        }
     };
 
     return (
@@ -54,6 +140,9 @@ const ProfileScreen = ({ navigation }) => {
                 style={styles.logo}
             />
             <Text style={styles.title}>Profile Page</Text>
+            {userProfileNotFound && (
+                <Text style={styles.errorText}>User profile not found. Please enter your details above.</Text>
+            )}
             <Text style={styles.nameLabel}>Name:</Text>
             <TextInput
                 style={styles.nameInput}
@@ -104,7 +193,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
             <TouchableOpacity
                 style={styles.saveButton}
-                onPress={onSaveChanges}
+                onPress={handleSaveProfile}
             >
                 <Text style={styles.saveButtonText}>Save Changes</Text>
             </TouchableOpacity>
@@ -113,6 +202,12 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    errorText: {
+        color: 'red',
+        fontSize: 16,
+        margin: 10,
+        textAlign: 'center',
+    },
     container: {
         flex: 1,
         backgroundColor: '#ffecf2',
@@ -216,7 +311,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 600,
         left: '50%',
-        transform: [{ translateX: -60 }],
+        transform: [{translateX: -60}],
     },
     userIcon: {
         width: 120,

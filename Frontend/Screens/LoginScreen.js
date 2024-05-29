@@ -15,7 +15,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../constants';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, setIsLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -36,6 +36,10 @@ const LoginScreen = ({ navigation }) => {
                     setEmail(savedEmail);
                     setPassword(savedPassword);
                     setRememberMe(true);
+                } else {
+                    await AsyncStorage.removeItem('email');
+                    await AsyncStorage.removeItem('password');
+                    await AsyncStorage.removeItem('rememberMe');
                 }
             } catch (error) {
                 console.error('Failed to load credentials', error);
@@ -82,19 +86,14 @@ const LoginScreen = ({ navigation }) => {
                 setMessageType('success');
                 setIsModalVisible(true);
 
-                if (rememberMe) {
-                    await AsyncStorage.setItem('email', email);
-                    await AsyncStorage.setItem('password', password);
-                    await AsyncStorage.setItem('rememberMe', 'true');
-                } else {
-                    await AsyncStorage.removeItem('email');
-                    await AsyncStorage.removeItem('password');
-                    await AsyncStorage.removeItem('rememberMe');
-                }
+                await AsyncStorage.setItem('email', email);
+                await AsyncStorage.setItem('password', password);
+                await AsyncStorage.setItem('rememberMe', rememberMe.toString());
 
                 setTimeout(() => {
                     setIsModalVisible(false);
-                    navigation.navigate('HomeScreen');
+                    setIsLoggedIn(true);
+                    // navigation.navigate('HomeScreen');
                 }, 2000);
             } else {
                 const errorText = await response.text();
@@ -215,7 +214,6 @@ const LoginScreen = ({ navigation }) => {
         </SafeAreaView>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
