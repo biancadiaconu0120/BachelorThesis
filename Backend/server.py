@@ -2,7 +2,7 @@ import logging
 
 from fastapi import FastAPI
 
-
+from api.asl_routes import router as asl_router
 from api.userRoutes import router as user_router
 from utils.dbConnection import init_db
 
@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 
 # Include routers
 app.include_router(user_router, prefix="/user", tags=["Users"])
-
+app.include_router(asl_router, prefix="/asl", tags=["ASL"])
 
 
 @app.get("/")

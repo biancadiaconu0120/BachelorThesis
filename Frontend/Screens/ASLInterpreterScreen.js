@@ -77,7 +77,7 @@ export default function App() {
                 style={styles.camera}
                 onCameraReady={() => console.log('Camera is ready')}
                 onMountError={(error) => console.log('Camera mount error:', error.message)}
-                // videoQuality={'1080p'}
+                videoQuality={'480p'}
                 mute={true}
                 mode={'video'}
                 facing={'front'}  // TODO: Allow the user to change this

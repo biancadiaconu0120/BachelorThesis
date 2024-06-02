@@ -10,7 +10,6 @@ from dto.userDto import MessageResponse
 from services.userService import UserService
 
 router = APIRouter()
-user_service = UserService(UserRepository())
 
 
 def get_user_service() -> UserService:
@@ -18,7 +17,7 @@ def get_user_service() -> UserService:
 
 
 @router.post("/login", response_model=LoginResponse, responses={401: {"models": ErrorResponse}})
-async def login(login_request: LoginRequest):
+async def login(login_request: LoginRequest, user_service: UserService = Depends(get_user_service)):
     user = user_service.login_user(login_request.email, login_request.password)
     if user:
         return LoginResponse(message="Login successful", user_id=str(user.id))
@@ -27,7 +26,7 @@ async def login(login_request: LoginRequest):
 
 
 @router.post("/register", response_model=RegisterResponse, responses={400: {"models": ErrorResponse}})
-async def register(register_request: RegisterRequest):
+async def register(register_request: RegisterRequest, user_service: UserService = Depends(get_user_service)):
     logging.info(f"Received registration request for email: {register_request.email}")
     try:
         registration_result = user_service.register_user(
