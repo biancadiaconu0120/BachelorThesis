@@ -1,6 +1,5 @@
 import logging
 import pickle
-
 import cv2
 import mediapipe as mp
 import torch
@@ -51,5 +50,26 @@ class InferenceService:
                         predicted_label = self.le.inverse_transform(predicted_class.cpu().numpy())[0]
                         predicted_labels.append(predicted_label)
 
+            # Draw hand landmarks
+            if results.multi_hand_landmarks:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    mp.solutions.drawing_utils.draw_landmarks(
+                        frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS
+                    )
+
+            # Resize the frame to fit within a 1024 width while maintaining the aspect ratio
+            height, width = frame.shape[:2]
+            desired_height = 700
+            if height > desired_height:
+                new_height = desired_height
+                new_width = int((new_height / height) * width)
+                frame = cv2.resize(frame, (new_width, new_height))
+
+            cv2.imshow('Video Preview', frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
         cap.release()
+        cv2.destroyAllWindows()
+
         return predicted_labels

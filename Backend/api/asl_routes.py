@@ -2,6 +2,7 @@ import base64
 import logging
 import os
 import sys
+from collections import Counter
 
 import aiofiles
 from fastapi import APIRouter, Depends, HTTPException
@@ -22,32 +23,7 @@ inference_service = InferenceService()
 #     return InferenceService()
 
 
-# # @router.post("/predict", response_model=PredictionResponseDTO)
-# @router.post("/predict")
-# async def predict(
-#         # video: UploadFile = File(...),
-#         video,
-#         # inference_service: InferenceService = Depends(get_inference_service)
-# ):
-#     try:
-#         async with aiofiles.tempfile.NamedTemporaryFile("wb", delete=False) as temp:
-#             try:
-#                 contents = await video.read()
-#                 await temp.write(contents)
-#             except Exception as e:
-#                 raise HTTPException(status_code=400, detail=f"There was an error uploading the file: {str(e)}")
-#             finally:
-#                 await video.close()
-#
-#         predicted_labels = await run_in_threadpool(inference_service.process_video, temp.name)
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=f"Error processing video: {str(e)}")
-#     finally:
-#         os.remove(temp.name)
-#
-#     return JSONResponse(content={"predicted_labels": predicted_labels})
-
-@router.post("/predict")
+@router.post("/predict", response_model=PredictionResponseDTO)
 async def predict(
         request: Request,
 ):
@@ -65,4 +41,5 @@ async def predict(
     finally:
         os.remove(temp.name)
 
+    predicted_labels = dict(Counter(predicted_labels).most_common())
     return JSONResponse(content={"predicted_labels": predicted_labels})

@@ -78,11 +78,10 @@ export default function App() {
                 uri,
                 {
                     fieldName: 'video',
-                    httpMethod:  'POST',
+                    httpMethod: 'POST',
                     headers: {
                         'Content-Type': 'video/mp4',
                     },
-                    // httpMethod: 'POST',
                     uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
                 }
             );
@@ -103,7 +102,10 @@ export default function App() {
                 onCameraReady={() => console.log('Camera is ready')}
                 onMountError={(error) => console.log('Camera mount error:', error.message)}
                 videoStabilizationMode={'auto'}
-                videoQuality={'480p'}
+                // videoQuality={'4:3'}
+                // videoQuality={'480p'}
+                videoQuality={'720p'}
+                // videoQuality={'1080p'}
                 mute={true}
                 mode={'video'}
                 facing={'front'}  // TODO: Allow the user to change this
@@ -128,8 +130,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     camera: {
+        flex: 1,
+        maxHeight: '90%',
         width: '100%',
-        aspectRatio: 1,
     },
     buttonContainer: {
         position: 'absolute',
