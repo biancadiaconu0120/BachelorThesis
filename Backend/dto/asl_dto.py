@@ -1,9 +1,6 @@
-from pydantic import BaseModel
 from typing import List
 
-
-class VideoUploadDTO(BaseModel):
-    video: bytes
+from pydantic import BaseModel
 
 
 class PredictionResponseDTO(BaseModel):

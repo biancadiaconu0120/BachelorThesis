@@ -1,9 +1,10 @@
+import logging
 import pickle
+
 import cv2
 import mediapipe as mp
 import torch
-import tempfile
-import os
+
 from asl_model.hand_utils import preprocess_for_model
 from asl_model.model import HandLandmarkNet
 
@@ -21,17 +22,18 @@ class InferenceService:
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.3)
 
-    def process_video(self, video_bytes: bytes):
-        # Save the uploaded file temporarily
-        with tempfile.NamedTemporaryFile(delete=False) as tmp:
-            tmp.write(video_bytes)
-            tmp_path = tmp.name
+        logging.info("Successfully loaded the inference models.")
 
-        # Open the video file
-        cap = cv2.VideoCapture(tmp_path)
+    def process_video(self, video_path: str):
         predicted_labels = []
 
-        while True:
+        # Open video stream using OpenCV from its path
+        cap = cv2.VideoCapture(video_path)
+
+        if not cap.isOpened():
+            raise ValueError("Error opening video stream or file")
+
+        while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
@@ -50,6 +52,4 @@ class InferenceService:
                         predicted_labels.append(predicted_label)
 
         cap.release()
-        os.remove(tmp_path)
-
         return predicted_labels

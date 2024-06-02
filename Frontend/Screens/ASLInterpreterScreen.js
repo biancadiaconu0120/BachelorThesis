@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {CameraView, useCameraPermissions, useMicrophonePermissions} from 'expo-camera';
+import * as FileSystem from 'expo-file-system';
+import {API_BASE_URL} from "../constants";
 
 export default function App() {
     const [cameraPermissionInfo, requestCameraPermission] = useCameraPermissions();
@@ -38,8 +40,7 @@ export default function App() {
         );
     }
 
-    // Function to start recording
-
+    // Record and send video
     const startRecording = async () => {
         if (cameraRef.current && !isRecording) {
             console.log("Trying to start recording...");
@@ -47,6 +48,7 @@ export default function App() {
             try {
                 const video = await cameraRef.current.recordAsync();
                 console.log('Video recorded:', video.uri);
+                await uploadVideo(video.uri);
             } catch (error) {
                 console.error('Error recording video:', error);
                 Alert.alert('Error', `Failed to record video: ${error.message}`);
@@ -61,12 +63,35 @@ export default function App() {
         }
     };
 
-// Function to stop recording
     const stopRecording = () => {
         if (cameraRef.current && isRecording) {
             console.log("Stopping recording...");
             cameraRef.current.stopRecording(); // Attempt to stop the recording
             setIsRecording(false); // Always set isRecording to false
+        }
+    };
+
+    const uploadVideo = async (uri) => {
+        try {
+            const response = await FileSystem.uploadAsync(
+                `${API_BASE_URL}/asl/predict`,
+                uri,
+                {
+                    fieldName: 'video',
+                    httpMethod:  'POST',
+                    headers: {
+                        'Content-Type': 'video/mp4',
+                    },
+                    // httpMethod: 'POST',
+                    uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+                }
+            );
+
+            const result = JSON.parse(response.body);
+            console.log('Prediction result:', result);
+        } catch (error) {
+            console.error('Error uploading video:', error);
+            Alert.alert('Error', `Failed to upload video: ${error.message}`);
         }
     };
 
@@ -77,6 +102,7 @@ export default function App() {
                 style={styles.camera}
                 onCameraReady={() => console.log('Camera is ready')}
                 onMountError={(error) => console.log('Camera mount error:', error.message)}
+                videoStabilizationMode={'auto'}
                 videoQuality={'480p'}
                 mute={true}
                 mode={'video'}

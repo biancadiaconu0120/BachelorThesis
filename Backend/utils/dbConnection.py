@@ -17,7 +17,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 def init_db():
-
     db_name = os.getenv('DB_NAME', 'bachelor_thesis')
     db_uri = os.getenv('DB_URI', 'mongodb://localhost:27017/bachelor_thesis')
 
@@ -26,7 +25,6 @@ def init_db():
         logging.info(f"Connected to MongoDB at {db_uri} successfully.")
     except Exception as e:
         logging.error(f"Failed to connect to MongoDB: {e}")
-
 
 
 def init_test_db():
