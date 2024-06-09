@@ -15,7 +15,7 @@ const InterpreterChooseScreen = ({ navigation }) => {
                 source={require('../assets/circles.png')}
                 style={styles.logo}
             />
-            <Text style={styles.title}>ASL Mode Selection</Text>
+            <Text style={styles.title}>ASL Interpretor</Text>
             <View style={[styles.middleRectangle, { top: '40%' }]}>
                 <Text style={styles.rectangleText}>Real-time interpretor</Text>
                 <TouchableOpacity
@@ -54,19 +54,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
-        width: 260,
+    width: 260,
         height: 250,
         position: 'absolute',
-        bottom: 730,
+        bottom: 650,
         left: -50,
-    },
+},
     title: {
         fontSize: 35,
         fontWeight: 'bold',
         color: 'black',
         marginTop: 15,
         marginBottom: 20,
-        left:5,
+        // left:20,
+        top:40,
     },
     middleRectangle: {
         width: 350,
@@ -102,8 +103,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'gray',
         textAlign: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: 40,
         marginBottom: 580,
+        top:40,
     },
     bottomImage: {
         width: 450,
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: 'absolute',
-        top: 20,
+        top: 40,
         right: 20,
         backgroundColor: '#DE6969',
         paddingHorizontal: 20,

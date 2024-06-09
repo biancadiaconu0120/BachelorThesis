@@ -17,6 +17,7 @@
     "expo": "~51.0.8",
     "expo-av": "~14.0.5",
     "expo-camera": "~15.0.9",
+    "expo-clipboard": "^6.0.3",
     "expo-file-system": "~17.0.1",
     "expo-image-picker": "~15.0.5",
     "expo-status-bar": "~1.12.1",
@@ -27,6 +28,7 @@
     "react-native-fs": "^2.20.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-modal": "^13.0.1",
+    "react-navigation": "^5.0.0",
     "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {

@@ -60,12 +60,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffecf2',
         alignItems: 'center',
         justifyContent: 'center',
+
     },
     logo: {
         width: 260,
         height: 250,
         position: 'absolute',
-        bottom: 730,
+        bottom: 650,
         left: -50,
     },
     title: {
@@ -88,11 +89,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
+
     },
     rectangleText: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'black',
+
     },
     startButton: {
         backgroundColor: '#DE6969',
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
         color: 'gray',
         textAlign: 'center',
         paddingHorizontal: 20,
-        marginBottom: 580,
+        marginBottom: 500,
     },
     bottomImage: {
         width: 300,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: 'absolute',
-        top: 20,
+        top: 40,
         right: 20,
         backgroundColor: '#DE6969',
         paddingHorizontal: 20,

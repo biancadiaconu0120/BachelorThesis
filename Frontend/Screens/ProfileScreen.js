@@ -1,48 +1,43 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-import {API_BASE_URL} from "../constants";
+import { API_BASE_URL } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from '@react-navigation/native';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({ navigation, setIsLoggedIn }) => {
     const [profileImage, setProfileImage] = useState(require('../assets/usericon.png'));
     const [name, setName] = useState("");
     const [date, setDate] = useState(new Date());
     const [country, setCountry] = useState("");
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [userProfileNotFound, setUserProfileNotFound] = useState(false);
-
     const [userEmail, setUserEmail] = useState("");
+
     useEffect(() => {
         const getUserEmailAndFetchProfile = async () => {
             const savedEmail = await AsyncStorage.getItem('email');
             if (savedEmail) {
                 setUserEmail(savedEmail);
                 try {
-                    console.log(`Fetching user profile for ${savedEmail}`);
-
                     const response = await fetch(
                         `${API_BASE_URL}/user/get-profile/${encodeURIComponent(savedEmail)}`
                     );
-
                     if (response.ok) {
                         const profile = await response.json();
                         setName(profile.name);
-                        setDate(formatStringToDate(profile.date_of_birth));
+                        setDate(new Date(profile.date_of_birth));
                         setCountry(profile.country);
                     } else {
                         const errorData = await response.json();
                         if (response.status === 404 && errorData.detail === "User profile not found") {
                             setUserProfileNotFound(true);
                         } else {
-                            console.error('Failed to load profile data:', errorData);
                             Alert.alert("Error", "1 - Failed to load profile data.");
                         }
                     }
                 } catch (error) {
-                    console.error('Network error:', error);
                     Alert.alert("Error", "2 - Failed to load profile data.");
                 }
             }
@@ -66,7 +61,7 @@ const ProfileScreen = ({navigation}) => {
         });
 
         if (!pickerResult.cancelled) {
-            setProfileImage({uri: pickerResult.uri});
+            setProfileImage({ uri: pickerResult.uri });
         }
     };
 
@@ -85,10 +80,6 @@ const ProfileScreen = ({navigation}) => {
         return `${year}-${month}-${day}`;
     };
 
-    const formatStringToDate = (date_string) => {
-        return new Date(date_string);
-    };
-
     const handleSaveProfile = async () => {
         try {
             const response = await fetch(`${API_BASE_URL}/user/profile`, {
@@ -104,20 +95,26 @@ const ProfileScreen = ({navigation}) => {
                 }),
             });
 
-            const data = await response.json();
-
             if (response.ok) {
-                console.log('Profile update successful:', data);
                 Alert.alert('Profile updated successfully!');
-                // Optionally navigate to another screen
             } else {
-                console.error('Profile update failed:', data);
+                const data = await response.json();
                 Alert.alert('Error updating profile:', data.detail || 'Unknown error');
             }
         } catch (error) {
-            console.error('Network error:', error);
             Alert.alert('An error occurred. Please try again later.');
         }
+    };
+
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('email');
+        setIsLoggedIn(false); // Ensure to update the state if using context or state management
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'LoginScreen' }],
+            })
+        );
     };
 
     return (
@@ -189,6 +186,12 @@ const ProfileScreen = ({navigation}) => {
                 onPress={handleSaveProfile}
             >
                 <Text style={styles.saveButtonText}>Save Changes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.logoutButton}
+                onPress={handleLogout}
+            >
+                <Text style={styles.logoutButtonText}>Logout</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -304,7 +307,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 600,
         left: '50%',
-        transform: [{translateX: -60}],
+        transform: [{ translateX: -60 }],
     },
     userIcon: {
         width: 120,
@@ -331,6 +334,21 @@ const styles = StyleSheet.create({
         bottom: 200,
     },
     saveButtonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    logoutButton: {
+        height: 50,
+        width: 150,
+        backgroundColor: '#DE6969',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25,
+        position: 'absolute',
+        bottom: 130,
+    },
+    logoutButtonText: {
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',

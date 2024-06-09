@@ -22,10 +22,6 @@ const HomeScreen = ({ navigation }) => {
                     source={require('../assets/question.png')}
                     style={styles.topIcon}
                 />
-                {/*<Image*/}
-                {/*    source={require('../assets/images/help.png')} // Adjust the path to your image file*/}
-                {/*    style={styles.buttonIcon}*/}
-                {/*/>*/}
             </TouchableOpacity>
 
             {/* Existing Icon Button */}
@@ -37,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
                 }}
             >
                 <Image
-                    source={require('../assets/images/Profile Circle.png')}
+                    source={require('../assets/usericon.png')}
                     style={styles.icon}
                 />
             </TouchableOpacity>
@@ -45,22 +41,38 @@ const HomeScreen = ({ navigation }) => {
             {/* First Image Section with Button */}
             <View style={styles.sectionContainer}>
                 <Image
-                    source={require('../assets/firstsection.png')}
+                    source={require('../assets/Technology (1).png')}
                     style={styles.sectionImage}
                 />
+                <Text style={styles.sectionText}>Fingerspell And</Text>
+                <Text style={styles.sectionText4}>Sign Language Interpreter</Text>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate('InterpreterChooseScreen')} // Navigates to InterpreterChooseScreen
                 >
                     <Text style={styles.buttonText}>Start Signing!</Text>
                 </TouchableOpacity>
+                <Image
+                    source={require('../assets/2.png')} // Replace with the correct path to your image
+                    style={styles.additionalImage1}
+                />
+                <Image
+                    source={require('../assets/SIGN.png')} // Replace with the correct path to your image
+                    style={styles.additionalImage2}
+                />
             </View>
 
             {/* Second Image Section with Button */}
             <View style={styles.sectionContainer}>
                 <Image
-                    source={require('../assets/secondsection.png')}
+                    source={require('../assets/Technology (1).png')}
                     style={styles.sectionImage}
+                />
+                <Text style={styles.sectionText3}>Master ASL</Text>
+                <Text style={styles.sectionText2}>Begin Your Journey!</Text>
+                <Image
+                    source={require('../assets/ASL.png')} // Replace with the correct path to your image
+                    style={styles.additionalImage}
                 />
                 <TouchableOpacity
                     style={styles.button}
@@ -84,14 +96,16 @@ const styles = StyleSheet.create({
         width: 260,
         height: 250,
         position: 'absolute',
-        bottom: 730,
+        bottom: 650,
         left: -50,
     },
     title: {
         fontSize: 35,
         fontWeight: 'bold',
         color: 'black',
-        marginTop: 15,
+        marginTop: 20,
+        top:20,
+        left:10,
     },
     sectionContainer: {
         width: '120%',
@@ -99,6 +113,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 20,
+        top: 60,
     },
     sectionImage: {
         width: '100%',
@@ -106,41 +121,105 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         position: 'absolute',
     },
+    sectionText: {
+        color: 'white',
+        fontSize: 33,
+        fontWeight: 'bold',
+        marginBottom: 20, // Adjust this to position the text correctly
+        zIndex: 1, // Ensure text is above the image
+        right: 80,
+        top:80,
+    },
+    sectionText2: {
+        color: 'white',
+        fontSize: 33,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20, // Adjust this to position the text correctly
+        zIndex: 1, // Ensure text is above the image
+        top:10,
+        right: 45,
+    },
+    sectionText3: {
+        color: 'white',
+        fontSize: 33,
+        fontWeight: 'bold',
+        marginBottom: 60, // Adjust this to position the text correctly
+        zIndex: 1, // Ensure text is above the image
+        right: 110,
+        top:70,
+    },
+    sectionText4: {
+        color: 'white',
+        fontSize: 33,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20, // Adjust this to position the text correctly
+        zIndex: 1, // Ensure text is above the image
+        top:60,
+    },
     button: {
-        padding: 15,
+        padding: 12,
         borderRadius: 25,
         backgroundColor: '#DE6969',
         position: 'absolute',
         alignSelf: 'center',
-        bottom: 45,
-        left: 55,
+        bottom: 55,
+        left: 50,
     },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 18,
     },
+    additionalImage: {
+        width: 250, // Adjust the width as needed
+        height: 200, // Adjust the height as needed
+        // resizeMode: 'contain',
+        // position: 'absolute',
+        bottom: 40,
+        left: 75,
+    }
+    ,
+    additionalImage1: {
+        width: 100, // Adjust the width as needed
+        height: 145, // Adjust the height as needed
+        // resizeMode: 'contain',
+        // position: 'absolute',
+        top:45,
+        left: 150,
+    },
+    additionalImage2: {
+        width: 220, // Adjust the width as needed
+        height: 115, // Adjust the height as needed
+        // resizeMode: 'contain',
+        // position: 'absolute',
+        bottom: 90,
+        left: 30,
+    },
+
+
     iconButton: {
         position: 'absolute',
-        right: 20,
-        top: 80,
+        right: 10,
+        top: 40,
         padding: 10,
     },
     icon: {
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
     },
     topIconButton: {
         position: 'absolute',
-        right: 20,
-        top: 10,
+        right: 75,
+        top: 40,
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
     },
     topIcon: {
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
     },
     buttonIcon: {
         width: 20,

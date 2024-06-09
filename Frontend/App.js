@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,18 +17,17 @@ import InformationScreen from './Screens/InformationScreen';
 import BlogScreen1 from './Screens/BlogScreen1';
 import BlogScreen2 from './Screens/BlogScreen2';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
+import ResultScreen from './Screens/ResultScreen';
 
 const Stack = createStackNavigator();
 
 export default function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const [userEmail, setUserEmail] = useState("");
 
     useEffect(() => {
         const checkLoginStatus = async () => {
             const savedEmail = await AsyncStorage.getItem('email');
             if (savedEmail) {
-                // setUserEmail(savedEmail);
                 setIsLoggedIn(true);
             }
         };
@@ -49,19 +47,18 @@ export default function App() {
                     <Stack.Screen name="HomeScreen" component={HomeScreen} />
                     <Stack.Screen name="LearningCourseScreen" component={LearningCourseScreen} />
                     <Stack.Screen name="ASLInterpreterScreen" component={ASLInterpreterScreen} />
+                    <Stack.Screen name="Result" component={ResultScreen} />
                     <Stack.Screen name="ASLFingerspellScreen" component={ASLFingerspellScreen} />
                     <Stack.Screen name="InterpreterChooseScreen" component={InterpreterChooseScreen} />
                     <Stack.Screen name="ABCScreen" component={ABCScreen} />
                     <Stack.Screen name="WordScreen" component={WordScreen} />
                     <Stack.Screen name="QuizScreen" component={QuizScreen} />
-                    {/*<Stack.Screen name="ProfileScreen">*/}
-                    {/*    {props => <ProfileScreen {...props} userEmail={userEmail} />}*/}
-                    {/*</Stack.Screen>*/}
-                    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+                    <Stack.Screen name="ProfileScreen">
+                        {props => <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+                    </Stack.Screen>
                     <Stack.Screen name="InformationScreen" component={InformationScreen} />
                     <Stack.Screen name="BlogScreen1" component={BlogScreen1} />
                     <Stack.Screen name="BlogScreen2" component={BlogScreen2} />
-                    {/* Continue to add other Screens as needed */}
                 </Stack.Navigator>
             ) : (
                 <Stack.Navigator
@@ -71,8 +68,7 @@ export default function App() {
                     }}
                 >
                     <Stack.Screen name="LoginScreen">
-                        {props =>
-                            <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+                        {props => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
                     </Stack.Screen>
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
                     <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
@@ -81,12 +77,3 @@ export default function App() {
         </NavigationContainer>
     );
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-});

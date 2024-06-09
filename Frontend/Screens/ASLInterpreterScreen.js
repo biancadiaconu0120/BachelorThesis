@@ -1,16 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {CameraView, useCameraPermissions, useMicrophonePermissions} from 'expo-camera';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CameraView, useCameraPermissions, useMicrophonePermissions } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
-import {API_BASE_URL} from "../constants";
+import { API_BASE_URL } from "../constants";
+import { Ionicons } from '@expo/vector-icons';
 
-export default function App() {
+export default function ASLInterpreterScreen({ navigation }) {
     const [cameraPermissionInfo, requestCameraPermission] = useCameraPermissions();
     const [microphonePermissionInfo, requestMicrophonePermission] = useMicrophonePermissions();
     const [isRecording, setIsRecording] = useState(false);
+    const [isButtonVisible, setIsButtonVisible] = useState(true); // New state variable for button visibility
+    const [cameraFacing, setCameraFacing] = useState('front');
     const cameraRef = useRef(null);
 
-    // Request camera and microphone permissions on component mount
     useEffect(() => {
         (async () => {
             const cameraStatus = await requestCameraPermission();
@@ -21,7 +23,6 @@ export default function App() {
         })();
     }, []);
 
-    // Check permission status and request if not granted
     if (!cameraPermissionInfo || !microphonePermissionInfo) {
         return <View style={styles.container}><Text>Requesting permissions...</Text></View>;
     }
@@ -40,34 +41,26 @@ export default function App() {
         );
     }
 
-    // Record and send video
     const startRecording = async () => {
         if (cameraRef.current && !isRecording) {
-            console.log("Trying to start recording...");
-            setIsRecording(true); // Set recording to true immediately to block any overlapping starts
+            setIsRecording(true);
+            setIsButtonVisible(true);
             try {
                 const video = await cameraRef.current.recordAsync();
-                console.log('Video recorded:', video.uri);
                 await uploadVideo(video.uri);
             } catch (error) {
                 console.error('Error recording video:', error);
                 Alert.alert('Error', `Failed to record video: ${error.message}`);
-            }
-            setIsRecording(false); // Set recording to false after the recording process is complete or fails
-        } else {
-            if (isRecording) {
-                console.log("Recording is already in progress");
-            } else {
-                console.log("Camera not ready");
+                setIsRecording(false);
             }
         }
     };
 
     const stopRecording = () => {
         if (cameraRef.current && isRecording) {
-            console.log("Stopping recording...");
-            cameraRef.current.stopRecording(); // Attempt to stop the recording
-            setIsRecording(false); // Always set isRecording to false
+            cameraRef.current.stopRecording();
+            setIsRecording(false);
+            setIsButtonVisible(false); // Hide the button when recording stops
         }
     };
 
@@ -88,10 +81,15 @@ export default function App() {
 
             const result = JSON.parse(response.body);
             console.log('Prediction result:', result);
+            navigation.navigate('Result', { result });
         } catch (error) {
             console.error('Error uploading video:', error);
             Alert.alert('Error', `Failed to upload video: ${error.message}`);
         }
+    };
+
+    const toggleCameraFacing = () => {
+        setCameraFacing((prevFacing) => (prevFacing === 'front' ? 'back' : 'front'));
     };
 
     return (
@@ -99,26 +97,31 @@ export default function App() {
             <CameraView
                 ref={cameraRef}
                 style={styles.camera}
+                facing={cameraFacing}
                 onCameraReady={() => console.log('Camera is ready')}
                 onMountError={(error) => console.log('Camera mount error:', error.message)}
                 videoStabilizationMode={'auto'}
-                // videoQuality={'4:3'}
-                // videoQuality={'480p'}
                 videoQuality={'720p'}
-                // videoQuality={'1080p'}
                 mute={true}
                 mode={'video'}
-                facing={'front'}  // TODO: Allow the user to change this
             >
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={startRecording}>
-                        <Text style={styles.text}>Start Recording</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={stopRecording}>
-                        <Text style={styles.text}>Stop Recording</Text>
-                    </TouchableOpacity>
+                    {isButtonVisible && (
+                        isRecording ? (
+                            <TouchableOpacity style={[styles.button, styles.stopButton]} onPress={stopRecording}>
+                                <Text style={styles.text}>Stop Recording</Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity style={[styles.button, styles.startButton]} onPress={startRecording}>
+                                <Text style={styles.text}>Start Recording</Text>
+                            </TouchableOpacity>
+                        )
+                    )}
                 </View>
             </CameraView>
+            <TouchableOpacity onPress={toggleCameraFacing} style={styles.reverseButton}>
+                <Ionicons name="camera-reverse" size={30} color="white" />
+            </TouchableOpacity>
         </View>
     );
 }
@@ -139,14 +142,36 @@ const styles = StyleSheet.create({
         bottom: 20,
         flexDirection: 'row',
         width: '100%',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
     },
     button: {
-        backgroundColor: '#fff',
-        padding: 10,
-        borderRadius: 5,
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        borderRadius: 30, // More rounded corners
+        marginHorizontal: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+    },
+    startButton: {
+        backgroundColor: '#4CAF50',  // Green color for start button
+    },
+    stopButton: {
+        backgroundColor: '#F44336',  // Red color for stop button
     },
     text: {
-        color: '#000',
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    reverseButton: {
+        position: 'absolute',
+        top: 80,
+        left: 20,
+        backgroundColor: '#DE6969',
+        padding: 10,
+        borderRadius: 20,
     },
 });

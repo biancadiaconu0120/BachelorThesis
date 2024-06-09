@@ -8,11 +8,14 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { API_BASE_URL } from '../constants';
+
+const { width } = Dimensions.get('window');
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -26,6 +29,10 @@ const RegisterScreen = ({ navigation }) => {
 
     const navigateToLogin = () => {
         navigation.navigate('LoginScreen');
+    };
+    const handleEmailChange = (text) => {
+        const lowercaseEmail = text.toLowerCase();
+        setEmail(lowercaseEmail);
     };
 
     const validateEmail = (email) => {
@@ -56,7 +63,6 @@ const RegisterScreen = ({ navigation }) => {
         }
 
         try {
-            console.log("Attempting to register with:", { email, password, confirmPassword });
             const response = await fetch(`${API_BASE_URL}/user/register`, {
                 method: 'POST',
                 headers: {
@@ -69,11 +75,8 @@ const RegisterScreen = ({ navigation }) => {
                 }),
             });
 
-            console.log("Response received:", response);
-
             if (response.ok) {
                 const data = await response.json();
-                console.log("Registration successful:", data);
                 setMessage("Registration Successful. You can now login.");
                 setMessageType('success');
                 setIsModalVisible(true);
@@ -82,15 +85,12 @@ const RegisterScreen = ({ navigation }) => {
                     navigateToLogin();
                 }, 2000);
             } else {
-                console.log("Registration failed with status:", response.status);
                 const errorText = await response.text();
-                console.log("Error response text:", errorText);
                 setMessage("An error occurred during registration.");
                 setMessageType('error');
                 setIsModalVisible(true);
             }
         } catch (error) {
-            console.error("Registration Error:", error);
             setMessage("An error occurred. Please try again later.");
             setMessageType('error');
             setIsModalVisible(true);
@@ -134,7 +134,7 @@ const RegisterScreen = ({ navigation }) => {
                                     style={styles.input}
                                     placeholder="Email"
                                     value={email}
-                                    onChangeText={setEmail}
+                                    onChangeText={handleEmailChange}
                                     keyboardType="email-address"
                                 />
                             </View>
@@ -156,7 +156,7 @@ const RegisterScreen = ({ navigation }) => {
                                     <Ionicons
                                         name={passwordVisible ? "eye-off" : "eye"}
                                         size={24}
-                                        color="#FC8585"
+                                        color="grey"
                                         style={styles.showIcon}
                                     />
                                 </TouchableOpacity>
@@ -179,7 +179,7 @@ const RegisterScreen = ({ navigation }) => {
                                     <Ionicons
                                         name={confirmPasswordVisible ? "eye-off" : "eye"}
                                         size={24}
-                                        color="#FC8585"
+                                        color="grey"
                                         style={styles.showIcon}
                                     />
                                 </TouchableOpacity>
@@ -188,15 +188,19 @@ const RegisterScreen = ({ navigation }) => {
                         <TouchableOpacity style={styles.button} onPress={handleRegister}>
                             <Text style={styles.buttonText}>Sign Up</Text>
                         </TouchableOpacity>
-                        <View style={styles.loginContainer}>
-                            <Text style={styles.loginPrompt}>Already have an account?</Text>
-                            <TouchableOpacity onPress={navigateToLogin}>
-                                <Text style={styles.loginText}>Login</Text>
-                            </TouchableOpacity>
-                        </View>
+                    </View>
+                    <View style={styles.loginContainer}>
+                        <Text style={styles.loginPrompt}>Already have an account?</Text>
+                        <TouchableOpacity onPress={navigateToLogin}>
+                            <Text style={styles.loginText}>Login</Text>
+                        </TouchableOpacity>
+
                     </View>
                 </View>
             </KeyboardAwareScrollView>
+            <View>
+
+            </View>
             <Modal isVisible={isModalVisible}>
                 <View style={[
                     styles.modalContent,
@@ -248,11 +252,11 @@ const styles = StyleSheet.create({
         width: '130%',
         marginBottom: 20,
         paddingHorizontal: 20,
-        bottom:50,
+        bottom: 50,
     },
     sideIcon: {
-        width: 27, // Adjust according to the size of your icon
-        height: 28, // Adjust according to the size of your icon
+        width: 27,
+        height: 28,
         marginRight: 10,
     },
     showIcon: {
@@ -269,7 +273,7 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         overflow: 'hidden',
         paddingLeft: 10,
-        width: '100%', // Make input fields longer
+        width: '100%',
     },
     titleContainer: {
         justifyContent: 'center',
@@ -311,7 +315,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#FC8585',
         marginLeft: 5,
-        fontWeight: 'bold', // Make the "Login" text bold
+        fontWeight: 'bold',
     },
     input: {
         flex: 1,
@@ -323,12 +327,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     button: {
-        width: '80%', // Make the Sign Up button wider
-        height: 40,
+        width: 90, // Set width to 95% of the screen width
+        height: 50, // Maintain height for better touch area
         backgroundColor: '#FC8585',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 20,
+        borderRadius: 25, // Maintain the border radius for a more rounded button
         marginTop: 50,
     },
     successMessage: {

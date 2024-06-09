@@ -25,6 +25,11 @@ const LoginScreen = ({ navigation, setIsLoggedIn }) => {
     const [messageType, setMessageType] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const handleEmailChange = (text) => {
+        const lowercaseEmail = text.toLowerCase();
+        setEmail(lowercaseEmail);
+    };
+
     useEffect(() => {
         const loadCredentials = async () => {
             try {
@@ -134,7 +139,7 @@ const LoginScreen = ({ navigation, setIsLoggedIn }) => {
                                 style={styles.input}
                                 placeholder="Email"
                                 value={email}
-                                onChangeText={setEmail}
+                                onChangeText={handleEmailChange}
                                 keyboardType="email-address"
                             />
                         </View>
@@ -355,6 +360,7 @@ const styles = StyleSheet.create({
         top: 10,
         right: 10,
     },
+
 });
 
 export default LoginScreen;

@@ -47,7 +47,7 @@ const WordScreen = ({ navigation }) => {
                 source={require('../assets/circles.png')}
                 style={styles.logo}
             />
-            <Text style={styles.title}>Let's learn ASL words!</Text>
+            <Text style={styles.title}>Learn ASL Terms!</Text>
 
             {Object.keys(categories).map((category, index) => (
                 <TouchableOpacity
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         width: 260,
         height: 250,
         position: 'absolute',
-        bottom: 730,
+        bottom: 650,
         left: -50,
     },
     title: {
@@ -148,7 +148,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         marginTop: 15,
-        marginBottom: 600,
+        marginBottom: 550,
+        left:10,
     },
     middleRectangle: {
         width: 350,
@@ -163,15 +164,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
+
     },
     rectangleText: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'black',
+        position:'center',
     },
     backButton: {
         position: 'absolute',
-        top: 20,
+        top: 40,
         right: 20,
         backgroundColor: '#DE6969',
         paddingHorizontal: 20,
@@ -203,8 +206,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: '150%', // Adjust width to ensure it fits the screen better
-        maxHeight: '700%', // Make sure the modal is not too tall
+        width: '90%', // Adjust width to ensure it fits the screen better
+        maxHeight: '80%', // Make sure the modal is not too tall
 
     },
     modalText: {
