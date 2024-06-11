@@ -1,43 +1,55 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, Image, TouchableOpacity, View, Modal } from 'react-native';
 
 const quizData = [
     {
-        questionImage: require('../assets/Quiz1.png'), // First question image
+        questionImage: require('../assets/Quiz1.png'),
         questionText: "What letter is represented in the image?",
-        choices: ['A', 'E', 'G', 'H']
+        choices: ['A', 'E', 'G', 'H'],
+        correctAnswer: 'A'
     },
     {
-        questionImage: require('../assets/hello.png'), // Second question image
+        questionImage: require('../assets/hello.png'),
         questionText: "Which is the word represented in this photo?",
-        choices: ['hello', 'ball', 'poll', 'same']
+        choices: ['hello', 'ball', 'poll', 'same'],
+        correctAnswer: 'hello'
     },
     {
-        questionImage: require('../assets/quiz3.png'), // Third question image
-        questionText: "What is the 4 th letter in this word?",
-        choices: ['I', 'V', 'K', 'L']
+        questionImage: require('../assets/quiz3.png'),
+        questionText: "What is the 4th letter in this word?",
+        choices: ['I', 'V', 'K', 'L'],
+        correctAnswer: 'V'
     },
-    // Add more questions as needed
 ];
 
 const QuizzScreen = ({ navigation }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [score, setScore] = useState(0);
+    const [modalVisible, setModalVisible] = useState(false);
 
-    const nextQuestion = () => {
+    const handleChoice = (choice) => {
+        if (choice === quizData[currentQuestionIndex].correctAnswer) {
+            setScore(prevScore => prevScore + 1);
+        }
         if (currentQuestionIndex < quizData.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setCurrentQuestionIndex(prevIndex => prevIndex + 1);
         } else {
-            alert('End of Quiz!'); // Or navigate to a results screen
+            setModalVisible(true);
         }
     };
 
-    const previousQuestion = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
+    const getImageForScore = (score) => {
+        switch(score) {
+            case 1:
+                return require('../assets/sademotion.png');
+            case 2:
+                return require('../assets/noemotion.png');
+            case 3:
+                return require('../assets/crown.png');
+            default:
+                return require('../assets/sademotion.png');  // default image if no specific score
         }
     };
-
-    const currentData = quizData[currentQuestionIndex];
 
     return (
         <SafeAreaView style={styles.container}>
@@ -54,7 +66,6 @@ const QuizzScreen = ({ navigation }) => {
 
             <Text style={styles.title}>Exercise</Text>
 
-            {/* Progress Indicator with page numbers */}
             <View style={styles.progressContainer}>
                 {quizData.map((item, index) => (
                     <View key={index} style={styles.progressItem}>
@@ -68,33 +79,69 @@ const QuizzScreen = ({ navigation }) => {
             </View>
 
             <Image
-                source={currentData.questionImage}
+                source={quizData[currentQuestionIndex].questionImage}
                 style={styles.imageBelowProgress}
             />
 
             <Text style={styles.descriptionText}>
-                {currentData.questionText}
+                {quizData[currentQuestionIndex].questionText}
             </Text>
 
             <View style={styles.buttonContainer}>
-                {currentData.choices.map((choice, index) => (
-                    <TouchableOpacity key={index} style={styles.choiceButton}>
+                {quizData[currentQuestionIndex].choices.map((choice, index) => (
+                    <TouchableOpacity key={index} style={styles.choiceButton} onPress={() => handleChoice(choice)}>
                         <Text style={styles.buttonText}>{choice}</Text>
                     </TouchableOpacity>
                 ))}
             </View>
 
             <View style={styles.navigationContainer}>
-                <TouchableOpacity style={styles.navButton} onPress={previousQuestion}>
+                <TouchableOpacity
+                    style={styles.navButton}
+                    onPress={() => setCurrentQuestionIndex(prevIndex => Math.max(prevIndex - 1, 0))}
+                >
                     <Text style={styles.navButtonText}>Previous</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navButton} onPress={nextQuestion}>
+                <TouchableOpacity
+                    style={styles.navButton}
+                    onPress={() => handleChoice(quizData[currentQuestionIndex].correctAnswer)}
+                >
                     <Text style={styles.navButtonText}>Next</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalTitle}>Quiz Completed!</Text>
+                        <Text style={styles.modalText}>Your final score is: {score}</Text>
+                        <Image
+                            source={getImageForScore(score)}
+                            style={styles.congratulationsImage}
+                        />
+                        <TouchableOpacity
+                            style={styles.buttonClose}
+                            onPress={() => {
+                                setModalVisible(!modalVisible);
+                                navigation.goBack();
+                            }}
+                        >
+                            <Text style={styles.textStyle}>Close Quiz</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {
@@ -115,7 +162,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',
-        bottom:5,
+        bottom: 5,
     },
     backButton: {
         position: 'absolute',
@@ -203,6 +250,62 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background for the overlay
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "#ffecf2",  // Set the background color
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        maxWidth: '80%',
+        borderColor: '#DE6969',  // Set the border color
+        borderWidth: 2,  // Set the width of the border
+    },
+
+    modalTitle: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 24,
+        fontWeight: "bold",
+        color: '#333'
+    },
+    modalText: {
+        marginBottom: 20,
+        fontSize: 18,
+        textAlign: "center",
+        color: '#555'
+    },
+    buttonClose: {
+        backgroundColor: '#DE6969',
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    congratulationsImage: {
+        width: 60,
+        height: 60,
+        marginTop: 20,
+        marginBottom: 20,
+        bottom:20,
+    }
 });
 
 export default QuizzScreen;
