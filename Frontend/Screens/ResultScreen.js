@@ -4,6 +4,18 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ScrollVi
 const ResultScreen = ({ route, navigation }) => {
     const { result } = route.params;
 
+    const formatResults = (result) => {
+        if (result.predicted_labels) {
+            const total = Object.values(result.predicted_labels).reduce((acc, value) => acc + value, 0);
+            return Object.entries(result.predicted_labels)
+                .map(([label, value]) => ({ label, percentage: (value / total * 100).toFixed(2) }))
+                .filter(({ percentage }) => percentage > 10) // Filter entries with percentage over 10%
+                .map(({ label, percentage }) => `${label}: ${percentage}%`) // Format as label: percentage
+                .join('\n'); // Join labels with newline character
+        }
+        return '';
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.background}>
@@ -16,7 +28,7 @@ const ResultScreen = ({ route, navigation }) => {
             <Text style={styles.subtitle}>Your Translation:</Text>
             <View style={styles.textBox}>
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <Text style={styles.resultText}>{JSON.stringify(result, null, 2)}</Text>
+                    <Text style={styles.resultText}>{formatResults(result)}</Text>
                 </ScrollView>
             </View>
             <Image

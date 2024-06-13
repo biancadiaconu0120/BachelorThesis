@@ -12,13 +12,17 @@ const ASLFingerspellScreen = ({ navigation }) => {
         require('../assets/start.png'),
     ];
 
+    const targetWords = ["know", "look", "start"];
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [targetWord, setTargetWord] = useState(targetWords[0]);
     const [cameraPermissionInfo, requestCameraPermission] = useCameraPermissions();
     const [microphonePermissionInfo, requestMicrophonePermission] = useMicrophonePermissions();
     const [isRecording, setIsRecording] = useState(false);
     const [isButtonVisible, setIsButtonVisible] = useState(true);
     const [cameraFacing, setCameraFacing] = useState('front');
     const cameraRef = useRef(null);
+    const [predictedLetters, setPredictedLetters] = useState([]);
+    const [isWordComplete, setIsWordComplete] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -49,7 +53,18 @@ const ASLFingerspellScreen = ({ navigation }) => {
     }
 
     const nextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setCurrentImageIndex((prevIndex) => {
+            const newIndex = (prevIndex + 1) % images.length;
+            setTargetWord(targetWords[newIndex]);
+            setPredictedLetters([]);
+            setIsWordComplete(false);
+            return newIndex;
+        });
+    };
+
+    const retakeWord = () => {
+        setPredictedLetters([]);
+        setIsWordComplete(false);
     };
 
     const startRecording = async () => {
@@ -71,7 +86,26 @@ const ASLFingerspellScreen = ({ navigation }) => {
         if (cameraRef.current && isRecording) {
             cameraRef.current.stopRecording();
             setIsRecording(false);
-            setIsButtonVisible(false);
+        }
+    };
+
+    const handlePredictionResult = (result) => {
+        if (result.predicted_labels) {
+            const total = Object.values(result.predicted_labels).reduce((acc, value) => acc + value, 0);
+            const topPrediction = Object.entries(result.predicted_labels)
+                .map(([label, value]) => ({ label, percentage: (value / total * 100).toFixed(2) }))
+                .filter(({ percentage }) => percentage > 50)
+                .sort((a, b) => b.percentage - a.percentage)[0];
+
+            if (topPrediction) {
+                setPredictedLetters((prevLetters) => {
+                    const newLetters = [...prevLetters, topPrediction.label];
+                    if (newLetters.length === targetWord.length) {
+                        setIsWordComplete(true);
+                    }
+                    return newLetters;
+                });
+            }
         }
     };
 
@@ -92,7 +126,7 @@ const ASLFingerspellScreen = ({ navigation }) => {
 
             const result = JSON.parse(response.body);
             console.log('Prediction result:', result);
-            navigation.navigate('Result', { result });
+            handlePredictionResult(result);
         } catch (error) {
             console.error('Error uploading video:', error);
             Alert.alert('Error', `Failed to upload video: ${error.message}`);
@@ -107,6 +141,18 @@ const ASLFingerspellScreen = ({ navigation }) => {
         setCameraFacing((prevFacing) => (prevFacing === 'front' ? 'back' : 'front'));
     };
 
+    const LetterBox = ({ letter, index }) => {
+        const isFilled = letter !== undefined && letter !== '';
+        const isCorrect = isFilled && letter.toLowerCase() === targetWord[index].toLowerCase();
+        const boxStyle = isFilled ? (isCorrect ? styles.correctLetterBox : styles.incorrectLetterBox) : styles.emptyLetterBox;
+
+        return (
+            <View style={[styles.letterBox, boxStyle]}>
+                <Text style={styles.letterText}>{letter}</Text>
+            </View>
+        );
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <Image
@@ -115,9 +161,6 @@ const ASLFingerspellScreen = ({ navigation }) => {
             />
             <View style={styles.textContainer}>
                 <Text style={styles.title}>ASL Fingerspelling</Text>
-                <Text style={styles.instruction}>
-                    Practice fingerspelling by copying the word!
-                </Text>
             </View>
             <View style={styles.changeableImageContainer}>
                 <Image
@@ -128,6 +171,13 @@ const ASLFingerspellScreen = ({ navigation }) => {
             <TouchableOpacity onPress={nextImage} style={styles.nextButton}>
                 <Text style={styles.nextButtonText}>Next Word</Text>
             </TouchableOpacity>
+            <View style={styles.predictionContainer}>
+                <View style={styles.letterBoxContainer}>
+                    {Array.from({ length: targetWord.length }).map((_, index) => (
+                        <LetterBox key={index} letter={predictedLetters[index] || ''} index={index} />
+                    ))}
+                </View>
+            </View>
             <CameraView
                 ref={cameraRef}
                 style={styles.camera}
@@ -146,13 +196,18 @@ const ASLFingerspellScreen = ({ navigation }) => {
                                 <Text style={styles.text}>Stop Recording</Text>
                             </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity style={[styles.button, styles.startButton]} onPress={startRecording}>
+                            <TouchableOpacity style={[styles.button, styles.startButton]} onPress={startRecording} disabled={isWordComplete}>
                                 <Text style={styles.text}>Start Recording</Text>
                             </TouchableOpacity>
                         )
                     )}
                 </View>
             </CameraView>
+            {isWordComplete && (
+                <TouchableOpacity onPress={retakeWord} style={styles.retakeButton}>
+                    <Text style={styles.retakeButtonText}>Retake Word</Text>
+                </TouchableOpacity>
+            )}
             <TouchableOpacity onPress={toggleCameraFacing} style={styles.reverseButton}>
                 <Ionicons name="camera-reverse" size={30} color="white" />
             </TouchableOpacity>
@@ -184,25 +239,19 @@ const styles = StyleSheet.create({
         left: 18,
     },
     title: {
-        fontSize: 35,
+        fontSize: 30,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',
-        left: 20,
-    },
-    instruction: {
-        fontSize: 18,
-        color: 'grey',
-        textAlign: 'center',
-        marginTop: 15,
-        left: 20,
+        left: 70,
+        top: -20,
     },
     changeableImageContainer: {
         marginTop: 10,
         width: 250,
-        height: 250,
+        height: 240,
         alignItems: 'center',
-        top: 65,
+        top: 35,
     },
     changeableImage: {
         width: '100%',
@@ -212,19 +261,13 @@ const styles = StyleSheet.create({
     nextButton: {
         position: 'absolute',
         right: 20,
-        top: 370,
+        top: 300,
         backgroundColor: '#DE6969',
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 20,
     },
     nextButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    startCameraButtonText: {
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
@@ -249,11 +292,11 @@ const styles = StyleSheet.create({
         flex: 1,
         maxHeight: '50%',
         width: '100%',
-        top: 90,
+        top: 25,
     },
     buttonContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 10,
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'center',
@@ -287,6 +330,56 @@ const styles = StyleSheet.create({
         backgroundColor: '#DE6969',
         padding: 10,
         borderRadius: 20,
+    },
+    predictionContainer: {
+        alignItems: 'center',
+        width: '100%',
+        marginTop: 20,
+    },
+    letterBoxContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        left: 0,
+    },
+    letterBox: {
+        width: 40,
+        height: 40,
+        margin: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        top: 20,
+    },
+    emptyLetterBox: {
+        backgroundColor: 'gray',
+    },
+    correctLetterBox: {
+        backgroundColor: 'green',
+    },
+    incorrectLetterBox: {
+        backgroundColor: 'red',
+    },
+    letterText: {
+        color: 'white',
+        fontSize: 23,
+        fontWeight: 'bold',
+    },
+    retakeButton: {
+        position: 'absolute',
+        bottom: 490,
+        backgroundColor: '#DE6969',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 20,
+        right: 283,
+    },
+    retakeButtonText: {
+        color: 'white',
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 
