@@ -1,7 +1,8 @@
 # SignEduAI: Sign Language Translation Application
 
 ## Overview
-The project is the practical part of the paper named: "SignEduAI: AN EDUCATIONAL MOBILE APPLICATION FOR SIGN LANGUAGE AND INTERPRETATION USING HAND POSE RECOGNITION". This project aims to develop a sign language translation application that uses the HandLandmarkNet model to recognize hand gestures and convert them into text and speech. The application also includes educational tools to help users learn sign language. The code for this project is available on GitHub: [https://github.com/biancadiaconu0120/BachelorThesis](https://github.com/biancadiaconu0120/BachelorThesis).
+The project is the practical part of the paper named: "SignEduAI: AN EDUCATIONAL MOBILE APPLICATION FOR SIGN LANGUAGE AND INTERPRETATION USING HAND POSE RECOGNITION". This project aims to develop a sign language translation application that uses the HandLandmarkNet model to recognize hand gestures and convert them into text and speech. The application also includes educational tools to help users learn sign language.
+The code for this project is available on [GitHub](https://github.com/biancadiaconu0120/BachelorThesis).
 
 ## Features
 
@@ -149,6 +150,7 @@ sign-language-translation/
 ## Future Work
 
 - Achieving 100% accuracy for the single-hand model.
+- Improving accuracy for two-hand model.
 - Adapting the model to recognize dynamic words.
 - Expanding the application to support Romanian Sign Language.
 - Enhancing the reliability of hand pose estimation.
@@ -158,4 +160,4 @@ sign-language-translation/
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-- Special thanks to all the testers and users for their valuable feedback.
+Special thanks to all the testers and users for their valuable feedback.
