@@ -12,11 +12,11 @@ const categories = {
 };
 
 const videoSources = {
-    'Hello': require('../assets/videos/24851.mp4'), // Example, replace with actual paths
-    'Please': require('../assets/videos/21530.mp4'), // Example, replace with actual paths
-    'Bye': require('../assets/videos/22741.mp4'), // Example, replace with actual paths
+    'Hello': require('../assets/videos/24851.mp4'),
+    'Please': require('../assets/videos/21530.mp4'),
+    'Bye': require('../assets/videos/22741.mp4'),
 
-    // Add more sources for each word
+
 };
 
 const WordScreen = ({ navigation }) => {
@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: '90%', // Adjust width to ensure it fits the screen better
-        maxHeight: '80%', // Make sure the modal is not too tall
+        width: '90%',
+        maxHeight: '80%',
 
     },
     modalText: {
@@ -255,9 +255,9 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     videoStyle: {
-        width: '100%',  // Ensures it fills the available modal width
-        height: 190,    // Fixed height, adjust as necessary
-        borderRadius: 10, // Optional, for rounded corners
+        width: '100%',
+        height: 190,
+        borderRadius: 10,
     },
 });
 

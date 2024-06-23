@@ -18,7 +18,7 @@ import BlogScreen1 from './Screens/BlogScreen1';
 import BlogScreen2 from './Screens/BlogScreen2';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
 import ResultScreen from './Screens/ResultScreen';
-
+import UseVoice from './Screens/UseVoice';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -41,7 +41,7 @@ export default function App() {
                 <Stack.Navigator
                     initialRouteName="HomeScreen"
                     screenOptions={{
-                        headerShown: false  // Disables the headers globally for all Screens
+                        headerShown: false
                     }}
                 >
                     <Stack.Screen name="HomeScreen" component={HomeScreen} />
@@ -59,19 +59,20 @@ export default function App() {
                     <Stack.Screen name="InformationScreen" component={InformationScreen} />
                     <Stack.Screen name="BlogScreen1" component={BlogScreen1} />
                     <Stack.Screen name="BlogScreen2" component={BlogScreen2} />
+                    <Stack.Screen name="UseVoice" component={UseVoice} />
                 </Stack.Navigator>
             ) : (
                 <Stack.Navigator
                     initialRouteName="LoginScreen"
                     screenOptions={{
-                        headerShown: false  // Disables the headers globally for all Screens
+                        headerShown: false
                     }}
                 >
                     <Stack.Screen name="LoginScreen">
                         {props => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
                     </Stack.Screen>
                     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                    <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+                    {/*<Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />*/}
                 </Stack.Navigator>
             )}
         </NavigationContainer>

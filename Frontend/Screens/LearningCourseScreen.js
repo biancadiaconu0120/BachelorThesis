@@ -4,10 +4,10 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'r
 const LearningCourseScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            {/* New Back button at the top right */}
+
             <TouchableOpacity
                 style={styles.backButton}
-                onPress={() => navigation.goBack()}  // Assumes navigation.goBack is the desired action
+                onPress={() => navigation.goBack()}
             >
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>

@@ -9,7 +9,7 @@ export default function ASLInterpreterScreen({ navigation }) {
     const [cameraPermissionInfo, requestCameraPermission] = useCameraPermissions();
     const [microphonePermissionInfo, requestMicrophonePermission] = useMicrophonePermissions();
     const [isRecording, setIsRecording] = useState(false);
-    const [isButtonVisible, setIsButtonVisible] = useState(true); // New state variable for button visibility
+    const [isButtonVisible, setIsButtonVisible] = useState(true);
     const [cameraFacing, setCameraFacing] = useState('front');
     const cameraRef = useRef(null);
 
@@ -60,7 +60,7 @@ export default function ASLInterpreterScreen({ navigation }) {
         if (cameraRef.current && isRecording) {
             cameraRef.current.stopRecording();
             setIsRecording(false);
-            setIsButtonVisible(false); // Hide the button when recording stops
+            setIsButtonVisible(false);
         }
     };
 
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     button: {
         paddingVertical: 15,
         paddingHorizontal: 30,
-        borderRadius: 30, // More rounded corners
+        borderRadius: 30,
         marginHorizontal: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -156,10 +156,10 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     startButton: {
-        backgroundColor: '#4CAF50',  // Green color for start button
+        backgroundColor: '#4CAF50',
     },
     stopButton: {
-        backgroundColor: '#F44336',  // Red color for stop button
+        backgroundColor: '#F44336',
     },
     text: {
         color: '#fff',

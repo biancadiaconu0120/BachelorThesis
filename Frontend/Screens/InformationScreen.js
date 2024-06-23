@@ -5,7 +5,7 @@ const InformationScreen = ({ navigation }) => {
     const topics = [
         { key: '1', title: 'How do deaf people communicate?', image: require('../assets/images/topic1.jpg'), screen: 'BlogScreen1' },
         { key: '2', title: 'A day in the life of a deaf person', image: require('../assets/images/topic2.jpg'), screen: 'BlogScreen2' }
-        // Add more topics as needed
+
     ];
 
     return (

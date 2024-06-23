@@ -10,7 +10,7 @@ from asl_model.model import HandLandmarkNet
 
 class InferenceService:
     def __init__(self):
-        # Load the LabelEncoder
+
         with open('asl_model/trained_models/label_encoder.pkl', 'rb') as f:
             self.le = pickle.load(f)
 
@@ -26,7 +26,7 @@ class InferenceService:
     def process_video(self, video_path: str):
         predicted_labels = []
 
-        # Open video stream using OpenCV from its path
+
         cap = cv2.VideoCapture(video_path)
 
         if not cap.isOpened():
@@ -50,14 +50,14 @@ class InferenceService:
                         predicted_label = self.le.inverse_transform(predicted_class.cpu().numpy())[0]
                         predicted_labels.append(predicted_label)
 
-            # Draw hand landmarks
+
             if results.multi_hand_landmarks:
                 for hand_landmarks in results.multi_hand_landmarks:
                     mp.solutions.drawing_utils.draw_landmarks(
                         frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS
                     )
 
-            # Resize the frame to fit within a 1024 width while maintaining the aspect ratio
+
             height, width = frame.shape[:2]
             desired_height = 700
             if height > desired_height:

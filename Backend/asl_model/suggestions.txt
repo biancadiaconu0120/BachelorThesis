@@ -1,7 +1,2 @@
-Data Augmentation -suggestion
-grid search -suggestion
-remove J, Z
-
-
 ok este fingerspell
 i am Bianca -> I'm (B I A N C A)

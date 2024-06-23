@@ -38,7 +38,7 @@ const BlogScreen2 = ({ navigation }) => {
                     and belonging through these shared experiences.
                 </Text>
                 <Image
-                    source={require('../assets/images/topic8.jpg')} // Add a new image asset here
+                    source={require('../assets/images/topic8.jpg')}
                     style={styles.blogImage}
                     resizeMode="contain"
                 />

@@ -47,7 +47,7 @@ const QuizzScreen = ({ navigation }) => {
             case 3:
                 return require('../assets/crown.png');
             default:
-                return require('../assets/sademotion.png');  // default image if no specific score
+                return require('../assets/sademotion.png');
         }
     };
 
@@ -225,8 +225,8 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        minWidth: '45%', // Adjusted for 2x2 layout
-        margin: 5, // Added some margin to space out the buttons
+        minWidth: '45%',
+        margin: 5,
     },
     buttonText: {
         color: 'white',
@@ -254,11 +254,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background for the overlay
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
     },
     modalView: {
         margin: 20,
-        backgroundColor: "#ffecf2",  // Set the background color
+        backgroundColor: "#ffecf2",
         borderRadius: 20,
         padding: 35,
         alignItems: "center",
@@ -271,8 +271,8 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         maxWidth: '80%',
-        borderColor: '#DE6969',  // Set the border color
-        borderWidth: 2,  // Set the width of the border
+        borderColor: '#DE6969',
+        borderWidth: 2,
     },
 
     modalTitle: {

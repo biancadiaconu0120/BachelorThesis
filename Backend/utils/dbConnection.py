@@ -8,7 +8,6 @@ from models.userModel import User
 
 # Constants
 PROD_DB_NAME = 'msa'
-# PROD_DB_URI = f'mongodb://MSAalebia:{os.getenv("MONGO_DB_PASSWORD")}@msa.cluster-clx6f6bdbck7.eu-west-3.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=utils/global-bundle.pem'
 TEST_DB_NAME = os.getenv('TEST_DB_NAME', 'test_db')
 TEST_DB_URI = os.getenv('TEST_DB_URI', 'mongodb://localhost:27017/test_db')
 

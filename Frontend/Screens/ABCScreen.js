@@ -35,7 +35,7 @@ const ABCScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <TouchableOpacity
                 style={styles.backButton}
-                onPress={() => navigation.navigate('LearningCourseScreen')} // Navigate back to LearningCourseScreen
+                onPress={() => navigation.navigate('LearningCourseScreen')}
             >
                 <Text style={styles.backButtonText}>Back</Text>
             </TouchableOpacity>

@@ -10,12 +10,12 @@ const HomeScreen = ({ navigation }) => {
             />
             <Text style={styles.title}>Ready to Sign?</Text>
 
-            {/* New Top Icon Button */}
+
             <TouchableOpacity
                 style={styles.topIconButton}
                 onPress={() => {
                     console.log("Top icon button pressed");
-                    navigation.navigate('InformationScreen');  // Navigates to InformationScreen
+                    navigation.navigate('InformationScreen');
                 }}
             >
                 <Image
@@ -24,12 +24,12 @@ const HomeScreen = ({ navigation }) => {
                 />
             </TouchableOpacity>
 
-            {/* Existing Icon Button */}
+
             <TouchableOpacity
                 style={styles.iconButton}
                 onPress={() => {
                     console.log("Icon button pressed");
-                    navigation.navigate('ProfileScreen');  // Navigates to ProfileScreen
+                    navigation.navigate('ProfileScreen');
                 }}
             >
                 <Image
@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
                 />
             </TouchableOpacity>
 
-            {/* First Image Section with Button */}
+
             <View style={styles.sectionContainer}>
                 <Image
                     source={require('../assets/Technology (1).png')}
@@ -48,21 +48,21 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.sectionText4}>Sign Language Interpreter</Text>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('InterpreterChooseScreen')} // Navigates to InterpreterChooseScreen
+                    onPress={() => navigation.navigate('InterpreterChooseScreen')}
                 >
                     <Text style={styles.buttonText}>Start Signing!</Text>
                 </TouchableOpacity>
                 <Image
-                    source={require('../assets/2.png')} // Replace with the correct path to your image
+                    source={require('../assets/2.png')}
                     style={styles.additionalImage1}
                 />
                 <Image
-                    source={require('../assets/SIGN.png')} // Replace with the correct path to your image
+                    source={require('../assets/SIGN.png')}
                     style={styles.additionalImage2}
                 />
             </View>
 
-            {/* Second Image Section with Button */}
+
             <View style={styles.sectionContainer}>
                 <Image
                     source={require('../assets/Technology (1).png')}
@@ -71,12 +71,12 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.sectionText3}>Master ASL</Text>
                 <Text style={styles.sectionText2}>Begin Your Journey!</Text>
                 <Image
-                    source={require('../assets/ASL.png')} // Replace with the correct path to your image
+                    source={require('../assets/ASL.png')}
                     style={styles.additionalImage}
                 />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('LearningCourseScreen')} // Navigates to LearningCourseScreen
+                    onPress={() => navigation.navigate('LearningCourseScreen')}
                 >
                     <Text style={styles.buttonText}>Start Learning!</Text>
                 </TouchableOpacity>
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 33,
         fontWeight: 'bold',
-        marginBottom: 20, // Adjust this to position the text correctly
-        zIndex: 1, // Ensure text is above the image
+        marginBottom: 20,
+        zIndex: 1,
         right: 80,
         top:80,
     },
@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
         fontSize: 33,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20, // Adjust this to position the text correctly
-        zIndex: 1, // Ensure text is above the image
+        marginBottom: 20,
+        zIndex: 1,
         top:10,
         right: 45,
     },
@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 33,
         fontWeight: 'bold',
-        marginBottom: 60, // Adjust this to position the text correctly
-        zIndex: 1, // Ensure text is above the image
+        marginBottom: 60,
+        zIndex: 1,
         right: 110,
         top:70,
     },
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
         fontSize: 33,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20, // Adjust this to position the text correctly
-        zIndex: 1, // Ensure text is above the image
+        marginBottom: 20,
+        zIndex: 1,
         top:60,
     },
     button: {
@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     additionalImage: {
-        width: 250, // Adjust the width as needed
-        height: 200, // Adjust the height as needed
+        width: 250,
+        height: 200,
         // resizeMode: 'contain',
         // position: 'absolute',
         bottom: 40,
@@ -182,16 +182,16 @@ const styles = StyleSheet.create({
     }
     ,
     additionalImage1: {
-        width: 100, // Adjust the width as needed
-        height: 145, // Adjust the height as needed
+        width: 100,
+        height: 145,
         // resizeMode: 'contain',
         // position: 'absolute',
         top:45,
         left: 150,
     },
     additionalImage2: {
-        width: 220, // Adjust the width as needed
-        height: 115, // Adjust the height as needed
+        width: 220,
+        height: 115,
         // resizeMode: 'contain',
         // position: 'absolute',
         bottom: 90,

@@ -61,9 +61,9 @@ def preprocess_for_model(hand_landmarks):
         torch.Tensor: A tensor suitable for input into a PyTorch model.
     """
     hand_data = process_landmarks(hand_landmarks)
-    # Flatten the landmarks data
+
     flattened_data = np.array(hand_data, dtype=np.float32).flatten()
-    # Convert to a torch tensor and add an extra batch dimension
+
     preprocessed_data = torch.tensor(flattened_data).unsqueeze(0)
     return preprocessed_data
 

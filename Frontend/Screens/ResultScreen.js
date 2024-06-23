@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from 'react-native';
+import { synthesizeSpeech } from '../SpeechSynthesis';
 
 const ResultScreen = ({ route, navigation }) => {
-    const { result } = route.params;
+    const { result: initialResult } = route.params;
+    const [result, setResult] = useState(initialResult);
+    const [topResult, setTopResult] = useState('');
+
+    useEffect(() => {
+        const top = getTopResult(result);
+        setTopResult(top);
+    }, [result]);
 
     const formatResults = (result) => {
         if (result.predicted_labels) {
@@ -11,9 +19,33 @@ const ResultScreen = ({ route, navigation }) => {
                 .map(([label, value]) => ({ label, percentage: (value / total * 100).toFixed(2) }))
                 .filter(({ percentage }) => percentage > 10) // Filter entries with percentage over 10%
                 .map(({ label, percentage }) => `${label}: ${percentage}%`) // Format as label: percentage
-                .join('\n'); // Join labels with newline character
+                .join('\n');
         }
         return '';
+    };
+
+    const getTopResult = (result) => {
+        if (result.predicted_labels) {
+            const total = Object.values(result.predicted_labels).reduce((acc, value) => acc + value, 0);
+            return Object.entries(result.predicted_labels)
+                .map(([label, value]) => ({ label, percentage: (value / total * 100).toFixed(2) }))
+                .filter(({ percentage }) => percentage > 50) // Filter entries with percentage over 50%
+                .map(({ label }) => label) // Return label
+                .join('\n');
+        }
+        return '';
+    };
+
+    const formattedText = formatResults(result);
+
+    const handleSpeak = async () => {
+        try {
+            console.log("Top result to be synthesized:", topResult);
+            await synthesizeSpeech(topResult);
+            console.log("Speech synthesis completed.");
+        } catch (error) {
+            console.error("Error synthesizing speech:", error);
+        }
     };
 
     return (
@@ -28,7 +60,7 @@ const ResultScreen = ({ route, navigation }) => {
             <Text style={styles.subtitle}>Your Translation:</Text>
             <View style={styles.textBox}>
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <Text style={styles.resultText}>{formatResults(result)}</Text>
+                    <Text style={styles.resultText}>{formattedText}</Text>
                 </ScrollView>
             </View>
             <Image
@@ -40,6 +72,19 @@ const ResultScreen = ({ route, navigation }) => {
                 onPress={() => navigation.navigate('InterpreterChooseScreen')}
             >
                 <Text style={styles.buttonText}>Back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.iconButton}
+                onPress={handleSpeak}
+            >
+                <Image
+                    source={require('../assets/buttonspeak.png')}
+                    style={styles.buttonIcon}
+                />
+                <Image
+                    source={require('../assets/SPEAKERICON.png')}
+                    style={styles.overlayIcon}
+                />
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -86,25 +131,25 @@ const styles = StyleSheet.create({
     },
     textBox: {
         borderWidth: 2,
-        borderColor: '#DE6969', // Dark pink border color
-        backgroundColor: '#FFDADA', // Light pink background color
-        borderRadius: 20, // Rounded corners
-        paddingVertical: 30, // Vertical padding
-        paddingHorizontal: 40, // Horizontal padding
+        borderColor: '#DE6969',
+        backgroundColor: '#FFDADA',
+        borderRadius: 20,
+        paddingVertical: 30,
+        paddingHorizontal: 40,
         marginBottom: 20,
         width: '90%',
         bottom: 20,
-        maxHeight: 200, // Set maximum height for the textbox
+        maxHeight: 200,
     },
     scrollContainer: {
         flexGrow: 1,
         justifyContent: 'center',
     },
     resultText: {
-        fontSize: 20, // Increase font size
+        fontSize: 20,
         color: 'black',
         padding: 10,
-        textAlign: 'center', // Center the text horizontally
+        textAlign: 'center',
     },
     backButton: {
         position: 'absolute',
@@ -123,8 +168,24 @@ const styles = StyleSheet.create({
     image: {
         width: 250,
         height: 250,
-        marginBottom: 0, // Adjust margin as needed
+        marginBottom: 0,
         top: 150,
+    },
+    iconButton: {
+        marginBottom: 20,
+        position: 'relative',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: -200,
+    },
+    buttonIcon: {
+        width: 70,
+        height: 70,
+    },
+    overlayIcon: {
+        width: 40,
+        height: 40,
+        position: 'absolute',
     },
 });
 

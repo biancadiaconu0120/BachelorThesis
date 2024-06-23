@@ -7,7 +7,7 @@ import torch
 from asl_model.hand_utils import preprocess_for_model
 from asl_model.model import HandLandmarkNet
 
-# Load the LabelEncoder
+
 with open('asl_model/trained_models/label_encoder.pkl', 'rb') as f:
     le = pickle.load(f)
 
@@ -29,7 +29,7 @@ while True:
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(frame_rgb)
 
-    predicted_labels = []  # Store predicted labels for each hand
+    predicted_labels = []
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
@@ -41,7 +41,7 @@ while True:
                 predicted_label = le.inverse_transform(predicted_class.cpu().numpy())[0]
                 predicted_labels.append(predicted_label)
 
-    # Display all predicted labels
+
     for i, label in enumerate(predicted_labels):
         cv2.putText(frame, f'Hand {i + 1}: {label}', (10, 50 + (i * 30)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 

@@ -41,7 +41,7 @@ const BlogScreen1 = ({ navigation }) => {
                     Video calls and messaging apps have transformed the way ASL users connect with others.
                 </Text>
                 <Image
-                    source={require('../assets/images/topic5.jpg')} // Add a new image asset here
+                    source={require('../assets/images/topic5.jpg')}
                     style={styles.blogImage}
                     resizeMode="contain"
                 />
@@ -72,8 +72,9 @@ const styles = StyleSheet.create({
     logo: {
         width: 260,
         height: 250,
-        bottom: 30,
-        marginLeft: -50,
+        position: 'absolute',
+        bottom: 500,
+        left: -50,
     },
     title: {
         fontSize: 30,

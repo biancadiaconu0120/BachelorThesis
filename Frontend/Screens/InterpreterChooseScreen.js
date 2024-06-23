@@ -4,10 +4,10 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'r
 const InterpreterChooseScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            {/* New Back button at the top right */}
+
             <TouchableOpacity
                 style={styles.backButton}
-                onPress={() => navigation.goBack()}  // Assumes navigation.goBack is the desired action
+                onPress={() => navigation.goBack()}
             >
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
@@ -15,9 +15,9 @@ const InterpreterChooseScreen = ({ navigation }) => {
                 source={require('../assets/circles.png')}
                 style={styles.logo}
             />
-            <Text style={styles.title}>ASL Interpretor</Text>
+            <Text style={styles.title}>ASL Interpreter</Text>
             <View style={[styles.middleRectangle, { top: '40%' }]}>
-                <Text style={styles.rectangleText}>Real-time interpretor</Text>
+                <Text style={styles.rectangleText}>ASL Interpreter</Text>
                 <TouchableOpacity
                     style={styles.startButton}
                     onPress={() => navigation.navigate('ASLInterpreterScreen')}
@@ -30,6 +30,15 @@ const InterpreterChooseScreen = ({ navigation }) => {
                 <TouchableOpacity
                     style={styles.startButton}
                     onPress={() => navigation.navigate('ASLFingerspellScreen')}
+                >
+                    <Text style={styles.buttonText}>Start!</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={[styles.middleRectangle, { top: '60%' }]}>
+                <Text style={styles.rectangleText}>Use Voice!</Text>
+                <TouchableOpacity
+                    style={styles.startButton}
+                    onPress={() => navigation.navigate('UseVoice')}
                 >
                     <Text style={styles.buttonText}>Start!</Text>
                 </TouchableOpacity>

@@ -108,7 +108,7 @@ const ProfileScreen = ({ navigation, setIsLoggedIn }) => {
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem('email');
-        setIsLoggedIn(false); // Ensure to update the state if using context or state management
+        setIsLoggedIn(false);
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
@@ -209,12 +209,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffecf2',
         alignItems: 'center',
         justifyContent: 'center',
-    },
+    } ,
     logo: {
         width: 260,
         height: 250,
         position: 'absolute',
-        bottom: 730,
+        bottom: 650,
         left: -50,
     },
     title: {

@@ -327,12 +327,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     button: {
-        width: 90, // Set width to 95% of the screen width
-        height: 50, // Maintain height for better touch area
+        width: 90,
+        height: 50,
         backgroundColor: '#FC8585',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 25, // Maintain the border radius for a more rounded button
+        borderRadius: 25,
         marginTop: 50,
     },
     successMessage: {
