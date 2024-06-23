@@ -157,6 +157,4 @@ sign-language-translation/
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-
-- Thanks to the contributors and the open-source community for their support and collaboration.
 - Special thanks to all the testers and users for their valuable feedback.
