@@ -1,9 +1,7 @@
 # SignEduAI: Sign Language Translation Application
 
 ## Overview
-The project is the practical part of the paper named: "SignEduAI: AN EDUCATIONAL MOBILE APPLICATION FOR SIGN LANGUAGE AND INTERPRETATION USING HAND POSE
-RECOGNITION".
-This project aims to develop a sign language translation application that uses the HandLandmarkNet model to recognize hand gestures and convert them into text and speech. The application also includes educational tools to help users learn sign language.
+The project is the practical part of the paper named: "SignEduAI: AN EDUCATIONAL MOBILE APPLICATION FOR SIGN LANGUAGE AND INTERPRETATION USING HAND POSE RECOGNITION". This project aims to develop a sign language translation application that uses the HandLandmarkNet model to recognize hand gestures and convert them into text and speech. The application also includes educational tools to help users learn sign language.
 
 ## Features
 
@@ -50,12 +48,19 @@ This project aims to develop a sign language translation application that uses t
     npm install -g expo-cli@latest
     ```
 
+### Project Setup
+
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/biancadiaconu0120/BachelorThesis.git
+    cd BachelorThesis
+    ```
+
 ### Backend Setup
 
-1. Clone the repository:
+1. Navigate to the backend directory:
     ```sh
-    git clone https://github.com/your-repo/sign-language-translation.git
-    cd sign-language-translation/backend
+    cd backend
     ```
 
 2. Create and activate a Conda environment:
@@ -119,11 +124,6 @@ To use the application, both the backend and frontend servers must be running:
 
 ## Project Structure
 
-
-
-
-
-## Project Structure
 ```
 sign-language-translation/
 ├── backend/
